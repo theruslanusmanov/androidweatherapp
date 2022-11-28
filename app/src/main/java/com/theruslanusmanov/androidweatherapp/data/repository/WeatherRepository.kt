@@ -11,8 +11,7 @@ import javax.inject.Inject
 
 @ActivityRetainedScoped
 class WeatherRepository @Inject constructor(private val apiService: ApiService, private val defaultDispatcher: CoroutineDispatcher) : BaseApiResponse() {
-    suspend fun getCurrentWeather() : NetworkResult<List<CurrentConditionsModel>> {
+    suspend fun getCurrentWeather() : NetworkResult<CurrentConditionsModel> {
         return withContext(defaultDispatcher){safeApiCall { apiService.getCurrentWeather() }}
     }
-
 }

@@ -24,7 +24,7 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
     private fun getCurrentWeather() = viewModelScope.launch {
         when (val result = weatherRepository.getCurrentWeather()) {
             is NetworkResult.Success -> {
-                result.data?.let { snapshotStateList.addAll(it) }
+                result.data?.let { snapshotStateList.add(it) }
             }
             else -> {}
         }

@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface ApiService {
     @GET("/currentconditions/v1/1")
-    suspend fun getCurrentWeather(): Response<List<CurrentConditionsModel>>
+    suspend fun getCurrentWeather(): Response<CurrentConditionsModel>
 }
