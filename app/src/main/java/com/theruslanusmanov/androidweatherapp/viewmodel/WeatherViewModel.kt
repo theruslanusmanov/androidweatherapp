@@ -1,10 +1,11 @@
 package com.theruslanusmanov.androidweatherapp.viewmodel
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import android.util.Log
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theruslanusmanov.androidweatherapp.data.models.CurrentConditionsModel
 import com.theruslanusmanov.androidweatherapp.data.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,18 +16,25 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository) :
     ViewModel(), LifecycleObserver {
 
+    private val _uiState = MutableLiveData<Any>()
+    val uiState: LiveData<Any>
+        get() = _uiState
+
     init {
         getCurrentWeather()
     }
 
-    val snapshotStateList = SnapshotStateList<CurrentConditionsModel>()
-
     private fun getCurrentWeather() = viewModelScope.launch {
+
         when (val result = weatherRepository.getCurrentWeather()) {
             is NetworkResult.Success -> {
-                result.data?.let { snapshotStateList.add(it) }
+
+                result.data?.let {
+                    _uiState.value = it
+                    Log.d("WEATHER_SUCCESS", it.toString())
+                }
             }
-            else -> {}
+            else -> { Log.d("WEATHER_ERROR", result.message.toString())}
         }
     }
 }

@@ -27,11 +27,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    if (currentWeather.uiState.value == null) {
+                        LoadingState()
+                    } else
+                        Greeting(currentWeather.uiState.value as String)
                 }
             }
         }
     }
+}
+
+@Composable
+fun LoadingState() {
+    Text(text = "Loading...")
 }
 
 @Composable
