@@ -13,5 +13,6 @@ Android weather app.
 
 ## Quick links
 
+* [android](https://developer.android.com/)
 * [compose samples](https://github.com/theruslanusmanov/compose-samples)
 * [mvvm-compose-hilt-sample](https://github.com/jaswinderwadali/mvvm-compose-hilt-sample)
