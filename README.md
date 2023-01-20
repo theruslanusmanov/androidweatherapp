@@ -2,6 +2,11 @@
 
 Android weather app.
 
+## TODO
+
+- [] Search city
+- [] Current city weather
+
 ## API
 
 * [AccuWeather API](https://developer.accuweather.com/)
