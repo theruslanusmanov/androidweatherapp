@@ -4,8 +4,8 @@ Android weather app.
 
 ## TODO
 
-- [] Search city
-- [] Current city weather
+- [ ] Search city
+- [ ] Current city weather
 
 ## API
 
