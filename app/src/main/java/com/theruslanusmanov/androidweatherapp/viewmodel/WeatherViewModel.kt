@@ -16,8 +16,8 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository) :
     ViewModel(), LifecycleObserver {
 
-    private val _uiState = MutableLiveData<Any>()
-    val uiState: LiveData<Any>
+    private val _uiState = MutableLiveData<String>()
+    val uiState: LiveData<String>
         get() = _uiState
 
     init {
@@ -30,8 +30,9 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
             is NetworkResult.Success -> {
 
                 result.data?.let {
-                    _uiState.value = it
+                    _uiState.value = it[0].Temperature.Metric.Value.toString()
                     Log.d("WEATHER_SUCCESS", it.toString())
+                    Log.d("WEATHER_SUCCESS_VALUE", _uiState.value!!)
                 }
             }
             else -> { Log.d("WEATHER_ERROR", result.message.toString())}

@@ -10,6 +10,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Observer
@@ -29,13 +31,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    currentWeather.uiState.observe(this, Observer<Any>() {
-                        Log.d("UISTATE", it.toString())
-                    })
-                    if (currentWeather.uiState.value == null) {
+                    val cur by currentWeather.uiState.observeAsState()
+//                    currentWeather.uiState.observe(this, Observer<String>() {
+//                        Log.d("UISTATE", it.toString())
+//                    })
+                    if (cur == null) {
                         LoadingState()
                     } else
-                        Greeting(currentWeather.uiState.value as String)
+                        Greeting(cur as String)
                 }
             }
         }
