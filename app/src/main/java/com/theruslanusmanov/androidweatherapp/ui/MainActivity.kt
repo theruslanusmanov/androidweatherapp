@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Color.Black,
                 ) {
                     val cur by currentWeather.uiState.observeAsState()
                     Column(
@@ -60,7 +61,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoadingState() {
-    Text(text = "Loading...")
+    Text(
+        text = "Loading...",
+        style = TextStyle(
+            fontSize = 64.sp,
+            color = Color.White
+        )
+    )
 }
 
 @Composable
@@ -71,6 +78,7 @@ fun City(name: String) {
         textAlign = TextAlign.Center,
         style = TextStyle(
             fontSize = 64.sp,
+            color = Color.White
         )
     )
 }
@@ -83,6 +91,7 @@ fun Temperature(value: String) {
         textAlign = TextAlign.Center,
         style = TextStyle(
             fontSize = 64.sp,
+            color = Color.White
         )
     )
 }
