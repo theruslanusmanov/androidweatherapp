@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Observer
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    currentWeather.uiState.observe(this, Observer<Any>() {
+                        Log.d("UISTATE", it.toString())
+                    })
                     if (currentWeather.uiState.value == null) {
                         LoadingState()
                     } else
