@@ -1,15 +1,10 @@
 package com.theruslanusmanov.androidweatherapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,18 +17,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Observer
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
+import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
-import androidx.compose.ui.text.googlefonts.GoogleFont
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.googlefonts.Font
-import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -58,8 +47,17 @@ class MainActivity : ComponentActivity() {
                         if (cur == null) {
                             LoadingState()
                         } else {
-                            city?.let { City(name = it) }
-                            cur?.let { Temperature(it) }
+                            Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
+                                city?.let { City(name = it) }
+                                Text("Today, Jan 1, 23:50", style = TextStyle(color = Color.White))
+                            }
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth().padding(20.dp)
+                            ) {
+                                Text("Clear", style = TextStyle(color = Color.White))
+                                cur?.let { Temperature(it) }
+                            }
                         }
                     }
                 }
@@ -95,12 +93,12 @@ fun City(name: String) {
 @Composable
 fun Temperature(value: String) {
     Text(
-        text = "$value℃",
+        text = "$value°",
         fontFamily = fontFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.W900,
         textAlign = TextAlign.Center,
         style = TextStyle(
-            fontSize = 64.sp,
+            fontSize = 72.sp,
             color = Color.White
         )
     )

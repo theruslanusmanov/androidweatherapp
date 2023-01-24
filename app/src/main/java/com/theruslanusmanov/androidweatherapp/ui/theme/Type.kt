@@ -22,16 +22,19 @@ val InterFont = GoogleFont(name = "Inter")
 
 @OptIn(ExperimentalTextApi::class)
 val fontFamily = FontFamily(
-    Font(googleFont = InterFont, fontProvider = provider)
+    Font(googleFont = InterFont, fontProvider = provider),
+    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Normal),
+    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Medium),
+    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Bold),
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = fontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
+//    body1 = TextStyle(
+//        fontFamily = fontFamily,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp
+//    )
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
