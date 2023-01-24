@@ -22,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
@@ -39,13 +40,14 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.Black,
+                    color = Color(0xFF131759),
                 ) {
                     val cur by currentWeather.uiState.observeAsState()
                     val city by currentWeather.uiCitiesState.observeAsState()
+
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Top
                     ) {
                         if (cur == null) {
                             LoadingState()
@@ -61,16 +63,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Search() {
-
-}
-
-@Composable
 fun LoadingState() {
     Text(
         text = "Loading...",
         style = TextStyle(
-            fontSize = 64.sp,
+            fontSize = 32.sp,
             color = Color.White
         )
     )
@@ -80,10 +77,10 @@ fun LoadingState() {
 fun City(name: String) {
     Text(
         text = name,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
         style = TextStyle(
-            fontSize = 64.sp,
+            fontSize = 32.sp,
             color = Color.White
         )
     )
@@ -93,7 +90,7 @@ fun City(name: String) {
 fun Temperature(value: String) {
     Text(
         text = "$value℃",
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Black,
         textAlign = TextAlign.Center,
         style = TextStyle(
             fontSize = 64.sp,
