@@ -1,7 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.data.models
 
-data class Metric(
+data class ImperialX(
     val Unit: String,
     val UnitType: Int,
-    val Value: Float
+    val Value: Int
 )

@@ -20,8 +20,13 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
     val uiState: LiveData<String>
         get() = _uiState
 
+    private val _uiCitiesState = MutableLiveData<String>()
+    val uiCitiesState: LiveData<String>
+        get() = _uiCitiesState
+
     init {
         getCurrentWeather()
+        getCity()
     }
 
     private fun getCurrentWeather() = viewModelScope.launch {
@@ -36,6 +41,21 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
                 }
             }
             else -> { Log.d("WEATHER_ERROR", result.message.toString())}
+        }
+    }
+
+    private fun getCity() = viewModelScope.launch {
+
+        when (val result = weatherRepository.searchCities()) {
+            is NetworkResult.Success -> {
+
+                result.data?.let {
+                    _uiCitiesState.value = it[0].EnglishName
+                    Log.d("SEARCH_CITIES_SUCCESS", it.toString())
+                    Log.d("SEARCH_CITIES_SUCCESS_VALUE", _uiCitiesState.value!!)
+                }
+            }
+            else -> { Log.d("SEARCH_CITIES_ERROR", result.message.toString())}
         }
     }
 }

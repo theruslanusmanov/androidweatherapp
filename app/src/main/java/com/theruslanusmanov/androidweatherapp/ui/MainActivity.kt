@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
                     color = Color.Black,
                 ) {
                     val cur by currentWeather.uiState.observeAsState()
+                    val city by currentWeather.uiCitiesState.observeAsState()
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
                         if (cur == null) {
                             LoadingState()
                         } else {
-                            City(name = "Ufa")
+                            city?.let { City(name = it) }
                             cur?.let { Temperature(it) }
                         }
                     }
@@ -57,6 +58,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun Search() {
+
 }
 
 @Composable
