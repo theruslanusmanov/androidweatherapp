@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.theruslanusmanov.androidweatherapp.data.models.CurrentConditionsModelItem
 import com.theruslanusmanov.androidweatherapp.data.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,13 +17,13 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository) :
     ViewModel(), LifecycleObserver {
 
-    private val _uiState = MutableLiveData<String>()
-    val uiState: LiveData<String>
-        get() = _uiState
+    private val _uiCurrentConditionsState = MutableLiveData<CurrentConditionsModelItem>()
+    val uiCurrentConditionsState: LiveData<CurrentConditionsModelItem>
+        get() = _uiCurrentConditionsState
 
-    private val _uiCitiesState = MutableLiveData<String>()
-    val uiCitiesState: LiveData<String>
-        get() = _uiCitiesState
+    private val _uiSearchCitiesState = MutableLiveData<String>()
+    val uiSearchCitiesState: LiveData<String>
+        get() = _uiSearchCitiesState
 
     init {
         getCurrentWeather()
@@ -35,9 +36,8 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
             is NetworkResult.Success -> {
 
                 result.data?.let {
-                    _uiState.value = it[0].Temperature.Metric.Value.toString()
+                    _uiCurrentConditionsState.value = it[0]
                     Log.d("WEATHER_SUCCESS", it.toString())
-                    Log.d("WEATHER_SUCCESS_VALUE", _uiState.value!!)
                 }
             }
             else -> { Log.d("WEATHER_ERROR", result.message.toString())}
@@ -50,9 +50,8 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
             is NetworkResult.Success -> {
 
                 result.data?.let {
-                    _uiCitiesState.value = it[0].EnglishName
+                    _uiSearchCitiesState.value = it[0].EnglishName
                     Log.d("SEARCH_CITIES_SUCCESS", it.toString())
-                    Log.d("SEARCH_CITIES_SUCCESS_VALUE", _uiCitiesState.value!!)
                 }
             }
             else -> { Log.d("SEARCH_CITIES_ERROR", result.message.toString())}
