@@ -30,11 +30,17 @@ import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.googlefonts.Font
+import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val currentWeather: WeatherViewModel by viewModels()
+
         setContent {
             AndroidWeatherAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -90,6 +96,7 @@ fun City(name: String) {
 fun Temperature(value: String) {
     Text(
         text = "$value℃",
+        fontFamily = fontFamily,
         fontWeight = FontWeight.Black,
         textAlign = TextAlign.Center,
         style = TextStyle(
