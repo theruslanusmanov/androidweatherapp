@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.ui
+package com.theruslanusmanov.androidweatherapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.theruslanusmanov.androidweatherapp.ui.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel

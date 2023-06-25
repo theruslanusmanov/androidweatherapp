@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.theruslanusmanov.androidweatherapp.City
+import com.theruslanusmanov.androidweatherapp.LoadingState
+import com.theruslanusmanov.androidweatherapp.Temperature
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
 
