@@ -5,7 +5,4 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class AndroidWeatherApplication: Application() {
-    override fun onCreate() {
-        super.onCreate()
-    }
 }
