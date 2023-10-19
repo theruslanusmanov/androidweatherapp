@@ -1,113 +1,149 @@
 package com.theruslanusmanov.androidweatherapp.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Place
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.theruslanusmanov.androidweatherapp.City
-import com.theruslanusmanov.androidweatherapp.LoadingState
-import com.theruslanusmanov.androidweatherapp.Temperature
+import androidx.compose.ui.unit.sp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
-import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
+import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 
 
-val darkColor = Color(0xFF131759)
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WeatherApp(currentWeather: WeatherViewModel) {
+fun WeatherApp() {
     AndroidWeatherAppTheme {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = darkColor,
+            color = Color.Black,
         ) {
-            val currentConditions by currentWeather.uiCurrentConditionsState.observeAsState()
-            val city by currentWeather.uiSearchCitiesState.observeAsState()
+            Weather()
+        }
+    }
+}
 
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceBetween,
-            ) {
-                if (currentConditions == null) {
-                    LoadingState()
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp)
-                    ) {
-                        city?.let { City(name = it) }
-                        Text("Today, Jan 1, 23:50", style = TextStyle(color = Color.White))
+@Composable
+fun Weather() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
+        LocationName(name = "Kazan")
+        Temperature(value = 23)
+        WeatherShortText(value = "Cloudy")
+        Spacer(modifier = Modifier.height(40.dp))
+        TenDayForecast()
+    }
+}
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(20.dp)
-                        ) {
-                            Column() {
-                                Icon(
-                                    Icons.Rounded.Place,
-                                    contentDescription = "Weather icon",
-                                    modifier = Modifier.size(48.dp),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.size(20.dp))
-                                currentConditions?.let {
-                                    Text(
-                                        it.WeatherText,
-                                        style = TextStyle(color = Color.White)
-                                    )
-                                }
-                            }
-                            currentConditions?.let { Temperature(it.Temperature.Metric.Value.toString()) }
-                        }
-                    }
-                }
+@Composable
+fun LocationName(name: String) {
+    Text(
+        text = name.uppercase(),
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Center,
+        style = TextStyle(
+            fontSize = 32.sp,
+            color = Color.White,
+            platformStyle = PlatformTextStyle(includeFontPadding = false)
+        )
+    )
+}
 
-                Column(
-                    Modifier
-                        .height(240.dp)
-                        .fillMaxWidth()
-                        .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
-                ) {
-                    Text(text = "Weather now", fontWeight = FontWeight.Bold, color = darkColor)
-                }
+@Composable
+fun Temperature(value: Int) {
+    Text(
+        text = "$value°",
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.W700,
+        textAlign = TextAlign.Center,
+        style = TextStyle(
+            fontSize = 120.sp,
+            color = Color.White,
+            platformStyle = PlatformTextStyle(includeFontPadding = false)
+        ),
+        modifier = Modifier.absoluteOffset(22.dp)
+    )
+}
+
+@Composable
+fun WeatherShortText(value: String) {
+    Text(
+        text = value,
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Center,
+        style = TextStyle(
+            fontSize = 32.sp,
+            color = Color.White,
+            platformStyle = PlatformTextStyle(includeFontPadding = false)
+        )
+    )
+}
+
+@Composable
+fun TenDayForecastRow() {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween ,modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "Today".uppercase(),
+            color = Color.White,
+        )
+        Icon(
+            Icons.Rounded.PlayArrow,
+            contentDescription = "Weather icon",
+            tint = Color.White
+        )
+        Text(
+            text = "23°".uppercase(),
+            color = Color.White,
+        )
+    }
+}
+
+@Composable
+fun TenDayForecast() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.DarkGray, shape = RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
+            .padding(15.dp)
+    ) {
+        Text(
+            text = "10-Day Forecast".uppercase(),
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            for (index in 0..10) {
+                TenDayForecastRow()
             }
         }
     }
+}
+
+@Preview()
+@Composable
+fun WeatherAppPreview() {
+    Weather()
 }
