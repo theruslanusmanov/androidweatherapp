@@ -53,7 +53,7 @@ fun WeatherApp(forecastViewModel: ForecastViewModel) {
 fun Weather(forecast: Forecast) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
         LocationName(name = "Kazan")
-        Temperature(value = forecast.elevation.toInt())
+        Temperature(value = forecast.current.temperature2m)
         WeatherShortText(value = "Cloudy")
         Spacer(modifier = Modifier.height(40.dp))
         TenDayForecast()
@@ -75,7 +75,7 @@ fun LocationName(name: String) {
 }
 
 @Composable
-fun Temperature(value: Int) {
+fun Temperature(value: Double = 0.0) {
     Text(
         text = "$value°",
         fontFamily = fontFamily,

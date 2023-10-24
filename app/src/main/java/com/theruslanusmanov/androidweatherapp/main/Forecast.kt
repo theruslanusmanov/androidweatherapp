@@ -1,33 +1,47 @@
 package com.theruslanusmanov.androidweatherapp.main
 
+import com.google.gson.annotations.SerializedName
 
-// API https://api.open-meteo.com/v1/forecast?latitude=55.7887&longitude=49.1221&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation&timezone=Europe%2FMoscow&forecast_days=14
+
+// API https://api.open-meteo.com/v1/forecast?latitude=55.7887&longitude=49.1221&current=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&timeformat=unixtime&timezone=Europe%2FMoscow&forecast_days=10&format=json
 data class Forecast(
-    val latitude: Double,
-    val longitude: Double,
-    val generationtime_ms: Double,
-    val utc_offset_seconds: Int,
-    val timezone: String,
-    val timezone_abbreviation: String,
-    val elevation: Double,
-    val HourlyUnits: HourlyUnits,
-    val Hourly: Hourly,
+    @SerializedName("latitude") var latitude: Double,
+    @SerializedName("longitude") var longitude: Double,
+    @SerializedName("generationtime_ms") var generationtimeMs: Double,
+    @SerializedName("utc_offset_seconds") var utcOffsetSeconds: Int,
+    @SerializedName("timezone") var timezone: String,
+    @SerializedName("timezone_abbreviation") var timezoneAbbreviation: String,
+    @SerializedName("elevation") var elevation: Int,
+    @SerializedName("current_units") var currentUnits: CurrentUnits,
+    @SerializedName("current") var current: Current,
+    @SerializedName("daily_units") var dailyUnits: DailyUnits,
+    @SerializedName("daily") var daily: Daily
 )
 
+data class Current(
+    @SerializedName("time") var time: Int,
+    @SerializedName("interval") var interval: Int,
+    @SerializedName("temperature_2m") var temperature2m: Double,
+    @SerializedName("weathercode") var weathercode: Int
+)
 
-class Hourly {
-    var time: ArrayList<Int>? = null
-    var temperature_2m: ArrayList<Double>? = null
-    var apparent_temperature: ArrayList<Double>? = null
-    var precipitation_probability: ArrayList<Int>? = null
-    var precipitation: ArrayList<Double>? = null
-}
+data class CurrentUnits(
+    @SerializedName("time") var time: String,
+    @SerializedName("interval") var interval: String,
+    @SerializedName("temperature_2m") var temperature2m: String,
+    @SerializedName("weathercode") var weathercode: String
+)
 
+data class Daily(
+    @SerializedName("time") var time: ArrayList<Int> = arrayListOf(),
+    @SerializedName("weathercode") var weathercode: ArrayList<Int> = arrayListOf(),
+    @SerializedName("temperature_2m_max") var temperature2mMax: ArrayList<Double> = arrayListOf(),
+    @SerializedName("temperature_2m_min") var temperature2mMin: ArrayList<Double> = arrayListOf()
+)
 
-class HourlyUnits {
-    var time: String? = null
-    var temperature_2m: String? = null
-    var apparent_temperature: String? = null
-    var precipitation_probability: String? = null
-    var precipitation: String? = null
-}
+data class DailyUnits(
+    @SerializedName("time") var time: String,
+    @SerializedName("weathercode") var weathercode: String,
+    @SerializedName("temperature_2m_max") var temperature2mMax: String,
+    @SerializedName("temperature_2m_min") var temperature2mMin: String
+)
