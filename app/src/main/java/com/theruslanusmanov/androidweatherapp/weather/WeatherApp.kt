@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
-import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

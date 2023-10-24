@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
-import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
+import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
