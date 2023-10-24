@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
@@ -120,21 +120,31 @@ fun TenDayForecastRow(
         Text(
             text = getDayOfWeek(time),
             color = Color.White,
-            modifier = Modifier.fillMaxWidth().weight(2f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f)
         )
         Text(
             text = getWeatherCodeDescription(weatherCode).uppercase(),
             color = Color.White,
-            modifier = Modifier.fillMaxWidth().weight(1f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         )
         Icon(
-            Icons.Rounded.PlayArrow, contentDescription = "Weather icon", tint = Color.White,
-            modifier = Modifier.fillMaxWidth().weight(1f)
+            painter = painterResource(id = getWeatherIcon(weatherCode)),
+            contentDescription = "Weather icon",
+            tint = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         )
         Text(
             text = "${String.format("%.1f", temperature)}°".uppercase(),
             color = Color.White,
-            modifier = Modifier.fillMaxWidth().weight(1f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         )
     }
 }
@@ -179,6 +189,24 @@ fun getWeatherCodeDescription(code: Int): String {
         85, 86 -> return "Snow shower"
         95, 96, 99 -> return "Thunderstorm"
         else -> return "Sunny"
+    }
+}
+
+fun getWeatherIcon(weatherCode: Int): Int {
+    when (weatherCode) {
+        0 -> return R.drawable.ic_sunny
+        1, 2, 3 -> return R.drawable.ic_cloud
+        45, 48 -> return R.drawable.ic_cloud
+        51, 53, 55 -> return R.drawable.ic_rainy
+        56, 57 -> return R.drawable.ic_rainy
+        61, 63, 65 -> return R.drawable.ic_rainy
+        66, 67 -> return R.drawable.ic_rainy
+        71, 73, 75 -> return R.drawable.ic_snowflake
+        77 -> return R.drawable.ic_snowflake
+        80, 81, 82 -> return R.drawable.ic_rainy
+        85, 86 -> return R.drawable.ic_snowflake
+        95, 96, 99 -> return R.drawable.ic_rainy
+        else -> return R.drawable.ic_sunny
     }
 }
 
