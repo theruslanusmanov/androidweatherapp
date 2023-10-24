@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.main
 
 
+// API https://api.open-meteo.com/v1/forecast?latitude=55.7887&longitude=49.1221&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation&timezone=Europe%2FMoscow&forecast_days=14
 data class Forecast(
     val latitude: Double,
     val longitude: Double,

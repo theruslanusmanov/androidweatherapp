@@ -1,7 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.di
 
 import com.theruslanusmanov.androidweatherapp.Config.HOST
-import com.theruslanusmanov.androidweatherapp.data.api.ApiService
+import com.theruslanusmanov.androidweatherapp.main.ForecastApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,8 +56,8 @@ object RestNetwork {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): ForecastApiService {
+        return retrofit.create(ForecastApiService::class.java)
     }
 
 
