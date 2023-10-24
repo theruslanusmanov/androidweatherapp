@@ -110,32 +110,31 @@ fun WeatherDescription(weathercode: Int) {
 fun TenDayForecastRow(
     time: Int,
     weatherCode: Int,
-    temperatureMin: Double,
-    temperatureMax: Double
+    temperature: Double
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = getDayOfWeek(time),
             color = Color.White,
+            modifier = Modifier.fillMaxWidth().weight(2f)
         )
         Text(
             text = getWeatherCodeDescription(weatherCode).uppercase(),
             color = Color.White,
+            modifier = Modifier.fillMaxWidth().weight(1f)
         )
         Icon(
-            Icons.Rounded.PlayArrow, contentDescription = "Weather icon", tint = Color.White
+            Icons.Rounded.PlayArrow, contentDescription = "Weather icon", tint = Color.White,
+            modifier = Modifier.fillMaxWidth().weight(1f)
         )
         Text(
-            text = "H: $temperatureMax°".uppercase(),
+            text = "${String.format("%.1f", temperature)}°".uppercase(),
             color = Color.White,
-        )
-        Text(
-            text = "L: $temperatureMin°".uppercase(),
-            color = Color.White,
+            modifier = Modifier.fillMaxWidth().weight(1f)
         )
     }
 }
@@ -158,8 +157,7 @@ fun TenDayForecast(dailyForecast: Daily) {
                 TenDayForecastRow(
                     dailyForecast.time[index],
                     dailyForecast.weathercode[index],
-                    dailyForecast.temperature2mMin[index],
-                    dailyForecast.temperature2mMax[index]
+                    (dailyForecast.temperature2mMax[index] + dailyForecast.temperature2mMin[index]) / 2
                 )
             }
         }
