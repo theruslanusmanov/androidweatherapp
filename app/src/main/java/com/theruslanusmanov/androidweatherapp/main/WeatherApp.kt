@@ -54,7 +54,7 @@ fun Weather(forecast: Forecast) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
         LocationName(name = "Kazan")
         Temperature(value = forecast.current.temperature2m)
-        WeatherShortText(value = "Cloudy")
+        WeatherDescription(value = forecast.current.weathercode)
         Spacer(modifier = Modifier.height(40.dp))
         TenDayForecast()
     }
@@ -91,9 +91,25 @@ fun Temperature(value: Double = 0.0) {
 }
 
 @Composable
-fun WeatherShortText(value: String) {
+fun WeatherDescription(value: Int) {
+    var description: String
+    when (value) {
+        0 -> description = "Clear sky"
+        1, 2, 3 -> description = "Partly cloudy"
+        45, 48 -> description = "Fog"
+        51, 53, 55 -> description = "Drizzle"
+        56, 57 -> description = "Freezing Drizzle"
+        61, 63, 65 -> description = "Rain"
+        66, 67 -> description = "Freezing Rain"
+        71, 73, 75 -> description = "Snow fall"
+        77 -> description = "Snow grains"
+        80, 81, 82 -> description = "Rain shower"
+        85, 86 -> description = "Snow shower"
+        95, 96, 99 -> description = "Thunderstorm"
+        else -> description = "Sunny"
+    }
     Text(
-        text = value,
+        text = description,
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
         style = TextStyle(
