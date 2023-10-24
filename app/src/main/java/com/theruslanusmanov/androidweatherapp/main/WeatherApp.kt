@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.sp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 @Composable
@@ -54,9 +56,9 @@ fun Weather(forecast: Forecast) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
         LocationName(name = "Kazan")
         Temperature(value = forecast.current.temperature2m)
-        WeatherDescription(value = forecast.current.weathercode)
+        WeatherDescription(weathercode = forecast.current.weathercode)
         Spacer(modifier = Modifier.height(40.dp))
-        TenDayForecast()
+        TenDayForecast(dailyForecast = forecast.daily)
     }
 }
 
@@ -91,25 +93,9 @@ fun Temperature(value: Double = 0.0) {
 }
 
 @Composable
-fun WeatherDescription(value: Int) {
-    var description: String
-    when (value) {
-        0 -> description = "Clear sky"
-        1, 2, 3 -> description = "Partly cloudy"
-        45, 48 -> description = "Fog"
-        51, 53, 55 -> description = "Drizzle"
-        56, 57 -> description = "Freezing Drizzle"
-        61, 63, 65 -> description = "Rain"
-        66, 67 -> description = "Freezing Rain"
-        71, 73, 75 -> description = "Snow fall"
-        77 -> description = "Snow grains"
-        80, 81, 82 -> description = "Rain shower"
-        85, 86 -> description = "Snow shower"
-        95, 96, 99 -> description = "Thunderstorm"
-        else -> description = "Sunny"
-    }
+fun WeatherDescription(weathercode: Int) {
     Text(
-        text = description,
+        text = getWeatherCodeDescription(weathercode),
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
         style = TextStyle(
@@ -121,30 +107,41 @@ fun WeatherDescription(value: Int) {
 }
 
 @Composable
-fun TenDayForecastRow() {
+fun TenDayForecastRow(
+    time: Int,
+    weatherCode: Int,
+    temperatureMin: Double,
+    temperatureMax: Double
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Today".uppercase(),
+            text = getDayOfWeek(time),
+            color = Color.White,
+        )
+        Text(
+            text = getWeatherCodeDescription(weatherCode).uppercase(),
             color = Color.White,
         )
         Icon(
-            Icons.Rounded.PlayArrow,
-            contentDescription = "Weather icon",
-            tint = Color.White
+            Icons.Rounded.PlayArrow, contentDescription = "Weather icon", tint = Color.White
         )
         Text(
-            text = "23°".uppercase(),
+            text = "H: $temperatureMax°".uppercase(),
+            color = Color.White,
+        )
+        Text(
+            text = "L: $temperatureMin°".uppercase(),
             color = Color.White,
         )
     }
 }
 
 @Composable
-fun TenDayForecast() {
+fun TenDayForecast(dailyForecast: Daily) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -154,16 +151,41 @@ fun TenDayForecast() {
             .padding(15.dp)
     ) {
         Text(
-            text = "10-Day Forecast".uppercase(),
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+            text = "10-Day Forecast".uppercase(), fontWeight = FontWeight.Bold, color = Color.White
         )
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            for (index in 0..10) {
-                TenDayForecastRow()
+            for (index in 0..9) {
+                TenDayForecastRow(
+                    dailyForecast.time[index],
+                    dailyForecast.weathercode[index],
+                    dailyForecast.temperature2mMin[index],
+                    dailyForecast.temperature2mMax[index]
+                )
             }
         }
     }
+}
+
+fun getWeatherCodeDescription(code: Int): String {
+    when (code) {
+        0 -> return "Clear sky"
+        1, 2, 3 -> return "Partly cloudy"
+        45, 48 -> return "Fog"
+        51, 53, 55 -> return "Drizzle"
+        56, 57 -> return "Freezing Drizzle"
+        61, 63, 65 -> return "Rain"
+        66, 67 -> return "Freezing Rain"
+        71, 73, 75 -> return "Snow fall"
+        77 -> return "Snow grains"
+        80, 81, 82 -> return "Rain shower"
+        85, 86 -> return "Snow shower"
+        95, 96, 99 -> return "Thunderstorm"
+        else -> return "Sunny"
+    }
+}
+
+fun getDayOfWeek(timestamp: Int): String {
+    return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
 }
 
 @Preview()
