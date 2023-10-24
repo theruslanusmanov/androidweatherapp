@@ -17,6 +17,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,26 +32,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
+import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
 
 
 @Composable
-fun WeatherApp() {
+fun WeatherApp(forecastViewModel: ForecastViewModel) {
     AndroidWeatherAppTheme {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = Color.Black,
         ) {
-            Weather()
+            val forecast by forecastViewModel.forecastState.observeAsState()
+            forecast?.let { Weather(it) }
         }
     }
 }
 
 @Composable
-fun Weather() {
+fun Weather(forecast: Forecast) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
         LocationName(name = "Kazan")
-        Temperature(value = 23)
+        Temperature(value = forecast.elevation.toInt())
         WeatherShortText(value = "Cloudy")
         Spacer(modifier = Modifier.height(40.dp))
         TenDayForecast()
@@ -102,7 +106,11 @@ fun WeatherShortText(value: String) {
 
 @Composable
 fun TenDayForecastRow() {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween ,modifier = Modifier.fillMaxWidth()) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Text(
             text = "Today".uppercase(),
             color = Color.White,
@@ -145,5 +153,5 @@ fun TenDayForecast() {
 @Preview()
 @Composable
 fun WeatherAppPreview() {
-    Weather()
+    Weather({ } as Forecast)
 }
