@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theruslanusmanov.androidweatherapp.main.Forecast
-import com.theruslanusmanov.androidweatherapp.main.WeatherRepository
+import com.theruslanusmanov.androidweatherapp.weather.Forecast
+import com.theruslanusmanov.androidweatherapp.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import r.bot.common.NetworkResult

@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.main
+package com.theruslanusmanov.androidweatherapp.weather
 
 import retrofit2.Response
 import retrofit2.http.GET

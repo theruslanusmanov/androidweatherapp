@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.main
+package com.theruslanusmanov.androidweatherapp.weather
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineDispatcher

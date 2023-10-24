@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.main
+package com.theruslanusmanov.androidweatherapp.weather
 
 import com.google.gson.annotations.SerializedName
 

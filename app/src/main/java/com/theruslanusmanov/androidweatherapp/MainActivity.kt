@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.theruslanusmanov.androidweatherapp.main.WeatherApp
+import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.viewmodel.ForecastViewModel
 import dagger.hilt.android.AndroidEntryPoint

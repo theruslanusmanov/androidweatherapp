@@ -1,7 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.di
 
 import com.theruslanusmanov.androidweatherapp.Config.HOST
-import com.theruslanusmanov.androidweatherapp.main.ForecastApiService
+import com.theruslanusmanov.androidweatherapp.weather.ForecastApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
