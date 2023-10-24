@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.ui
+package com.theruslanusmanov.androidweatherapp.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

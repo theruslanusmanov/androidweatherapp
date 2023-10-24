@@ -2,7 +2,7 @@ package com.theruslanusmanov.androidweatherapp
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.theruslanusmanov.androidweatherapp.data.repository.WeatherRepository
-import com.theruslanusmanov.androidweatherapp.ui.WeatherApp
+import com.theruslanusmanov.androidweatherapp.main.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.viewmodel.WeatherViewModel
 import org.junit.Before

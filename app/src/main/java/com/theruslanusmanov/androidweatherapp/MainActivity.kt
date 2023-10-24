@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.theruslanusmanov.androidweatherapp.ui.WeatherApp
+import com.theruslanusmanov.androidweatherapp.main.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
