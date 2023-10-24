@@ -3,8 +3,8 @@ package com.theruslanusmanov.androidweatherapp.weather
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import r.bot.common.BaseApiResponse
-import r.bot.common.NetworkResult
+import com.theruslanusmanov.androidweatherapp.common.BaseApiResponse
+import com.theruslanusmanov.androidweatherapp.common.NetworkResult
 import javax.inject.Inject
 
 

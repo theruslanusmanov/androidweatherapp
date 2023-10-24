@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import r.bot.common.NetworkResult
+import com.theruslanusmanov.androidweatherapp.common.NetworkResult
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-package r.bot.common
+package com.theruslanusmanov.androidweatherapp.common
 
 import retrofit2.Response
 

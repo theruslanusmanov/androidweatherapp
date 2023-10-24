@@ -1,4 +1,4 @@
-package r.bot.common
+package com.theruslanusmanov.androidweatherapp.common
 
 sealed class NetworkResult<T>(
     val data: T? = null,
