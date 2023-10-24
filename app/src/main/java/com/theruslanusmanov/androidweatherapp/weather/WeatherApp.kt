@@ -124,13 +124,6 @@ fun TenDayForecastRow(
                 .fillMaxWidth()
                 .weight(2f)
         )
-        Text(
-            text = getWeatherCodeDescription(weatherCode).uppercase(),
-            color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
         Icon(
             painter = painterResource(id = getWeatherIcon(weatherCode)),
             contentDescription = "Weather icon",
@@ -142,9 +135,10 @@ fun TenDayForecastRow(
         Text(
             text = "${String.format("%.1f", temperature)}°".uppercase(),
             color = Color.White,
+            textAlign = TextAlign.End,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(0.5f)
         )
     }
 }
