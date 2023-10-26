@@ -2,6 +2,7 @@ package com.theruslanusmanov.androidweatherapp.weather
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -63,21 +64,41 @@ fun Weather(forecast: Forecast) {
 
 @Composable
 fun LocationName(name: String) {
-    Text(
-        text = name.uppercase(),
-        fontWeight = FontWeight.Medium,
-        textAlign = TextAlign.Center,
-        style = TextStyle(
-            fontSize = 32.sp,
-            color = Color.White,
-            platformStyle = PlatformTextStyle(includeFontPadding = false)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_search),
+                contentDescription = "Search icon",
+                tint = Color.White
+            )
+        }
+        Text(
+            text = name.uppercase(),
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 32.sp,
+                color = Color.White,
+                platformStyle = PlatformTextStyle(includeFontPadding = false)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         )
-    )
-    Icon(
-        painter = painterResource(id = R.drawable.ic_search),
-        contentDescription = "Weather icon",
-        tint = Color.White
-    )
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+    }
 }
 
 @Composable
