@@ -173,38 +173,38 @@ fun TenDayForecast(dailyForecast: Daily) {
 }
 
 fun getWeatherCodeDescription(code: Int): String {
-    when (code) {
-        0 -> return "Clear sky"
-        1, 2, 3 -> return "Partly cloudy"
-        45, 48 -> return "Fog"
-        51, 53, 55 -> return "Drizzle"
-        56, 57 -> return "Freezing Drizzle"
-        61, 63, 65 -> return "Rain"
-        66, 67 -> return "Freezing Rain"
-        71, 73, 75 -> return "Snow fall"
-        77 -> return "Snow grains"
-        80, 81, 82 -> return "Rain shower"
-        85, 86 -> return "Snow shower"
-        95, 96, 99 -> return "Thunderstorm"
-        else -> return "Sunny"
+    return when (code) {
+        0 -> "Clear sky"
+        1, 2, 3 -> "Partly cloudy"
+        45, 48 -> "Fog"
+        51, 53, 55 -> "Drizzle"
+        56, 57 -> "Freezing Drizzle"
+        61, 63, 65 -> "Rain"
+        66, 67 -> "Freezing Rain"
+        71, 73, 75 -> "Snow fall"
+        77 -> "Snow grains"
+        80, 81, 82 -> "Rain shower"
+        85, 86 -> "Snow shower"
+        95, 96, 99 -> "Thunderstorm"
+        else -> "Sunny"
     }
 }
 
 fun getWeatherIcon(weatherCode: Int): Int {
-    when (weatherCode) {
-        0 -> return R.drawable.ic_sunny
-        1, 2, 3 -> return R.drawable.ic_cloud
-        45, 48 -> return R.drawable.ic_cloud
-        51, 53, 55 -> return R.drawable.ic_rainy
-        56, 57 -> return R.drawable.ic_rainy
-        61, 63, 65 -> return R.drawable.ic_rainy
-        66, 67 -> return R.drawable.ic_rainy
-        71, 73, 75 -> return R.drawable.ic_snowflake
-        77 -> return R.drawable.ic_snowflake
-        80, 81, 82 -> return R.drawable.ic_rainy
-        85, 86 -> return R.drawable.ic_snowflake
-        95, 96, 99 -> return R.drawable.ic_rainy
-        else -> return R.drawable.ic_sunny
+    return when (weatherCode) {
+        0 -> R.drawable.ic_sunny
+        1, 2, 3 -> R.drawable.ic_cloud
+        45, 48 -> R.drawable.ic_cloud
+        51, 53, 55 -> R.drawable.ic_rainy
+        56, 57 -> R.drawable.ic_rainy
+        61, 63, 65 -> R.drawable.ic_rainy
+        66, 67 -> R.drawable.ic_rainy
+        71, 73, 75 -> R.drawable.ic_snowflake
+        77 -> R.drawable.ic_snowflake
+        80, 81, 82 -> R.drawable.ic_rainy
+        85, 86 -> R.drawable.ic_snowflake
+        95, 96, 99 -> R.drawable.ic_rainy
+        else -> R.drawable.ic_sunny
     }
 }
 
