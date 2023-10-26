@@ -73,6 +73,11 @@ fun LocationName(name: String) {
             platformStyle = PlatformTextStyle(includeFontPadding = false)
         )
     )
+    Icon(
+        painter = painterResource(id = R.drawable.ic_search),
+        contentDescription = "Weather icon",
+        tint = Color.White
+    )
 }
 
 @Composable
