@@ -1,6 +1,8 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -69,10 +71,14 @@ fun LocationName(name: String) {
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
+        // Search Button
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .clickable {
+                    Log.d("AWA", "CLICKED!")
+                }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
