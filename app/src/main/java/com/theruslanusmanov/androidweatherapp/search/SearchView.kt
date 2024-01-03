@@ -62,7 +62,7 @@ fun Header(title: String, navController: NavController) {
                 }
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_search),
+                painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "Search icon",
                 tint = Color.White
             )
