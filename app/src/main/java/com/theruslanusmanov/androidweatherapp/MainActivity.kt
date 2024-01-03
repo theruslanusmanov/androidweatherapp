@@ -6,6 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.theruslanusmanov.androidweatherapp.search.SearchView
 import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
@@ -19,7 +23,22 @@ class MainActivity : ComponentActivity() {
         val forecastViewModel: ForecastViewModel by viewModels()
 
         setContent {
-            WeatherApp(forecastViewModel)
+
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = WeatherRoutes.Main.name
+            ) {
+                // * Main
+                composable(route = WeatherRoutes.Main.name) {
+                    WeatherApp(forecastViewModel)
+                }
+                // * Search
+                composable(route = WeatherRoutes.Search.name) {
+                    SearchView()
+                }
+            }
+
         }
     }
 }
