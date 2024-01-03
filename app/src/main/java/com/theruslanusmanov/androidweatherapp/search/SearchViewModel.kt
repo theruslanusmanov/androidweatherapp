@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.weather
+package com.theruslanusmanov.androidweatherapp.search
 
 import android.util.Log
 import androidx.lifecycle.LifecycleObserver
@@ -12,23 +12,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ForecastViewModel @Inject constructor(private val weatherRepository: WeatherRepository) :
+class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
     ViewModel(), LifecycleObserver {
-    private val _forecastState = MutableLiveData<Forecast>()
-    val forecastState: LiveData<Forecast>
-        get() = _forecastState
+    private val _searchState = MutableLiveData<Geocode>()
+    val searchState: LiveData<Geocode>
+        get() = _searchState
 
     init {
-        getForecast()
+        getSearch()
     }
 
-    private fun getForecast() = viewModelScope.launch {
+    private fun getSearch() = viewModelScope.launch {
 
-        when (val result = weatherRepository.getForecast()) {
+        when (val result = searchRepository.getSearch()) {
             is NetworkResult.Success -> {
 
                 result.data?.let {
-                    _forecastState.value = it
+                    _searchState.value = it
                     Log.d("WEATHER_SUCCESS", it.toString())
                 }
             }

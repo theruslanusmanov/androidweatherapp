@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.di
 
-import com.theruslanusmanov.androidweatherapp.Config.HOST
+import com.theruslanusmanov.androidweatherapp.Config.FORECAST_HOST
+import com.theruslanusmanov.androidweatherapp.search.GeocodeApiService
 import com.theruslanusmanov.androidweatherapp.weather.ForecastApiService
 import dagger.Module
 import dagger.Provides
@@ -21,8 +22,8 @@ object RestNetwork {
 
     @Singleton
     @Provides
-    fun provideBaseURL(): String {
-        return HOST
+    fun provideBaseForecastURL(): String {
+        return FORECAST_HOST
     }
 
     @Singleton
@@ -60,13 +61,15 @@ object RestNetwork {
         return retrofit.create(ForecastApiService::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideGeocodeApiService(retrofit: Retrofit): GeocodeApiService {
+        return retrofit.create(GeocodeApiService::class.java)
+    }
+
 
     @Provides
     fun provideIDispatcher(): CoroutineDispatcher {
         return Dispatchers.IO
     }
-
-
-
-
 }

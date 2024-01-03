@@ -1,19 +1,18 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,31 +29,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
-import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
+import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 @Composable
-fun WeatherApp(forecastViewModel: ForecastViewModel) {
-    AndroidWeatherAppTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.Black,
-        ) {
-            val forecast by forecastViewModel.forecastState.observeAsState()
-            forecast?.let { Weather(it) }
-        }
-    }
+fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavController) {
+    val forecast by forecastViewModel.forecastState.observeAsState()
+    forecast?.let { Weather(it, navController) }
 }
 
 @Composable
-fun Weather(forecast: Forecast) {
+fun Weather(forecast: Forecast, navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
-        LocationName(name = "Kazan")
+        LocationName(name = "Kazan", navController)
         Temperature(value = forecast.current.temperature2m)
         WeatherDescription(weathercode = forecast.current.weathercode)
         Spacer(modifier = Modifier.height(40.dp))
@@ -63,16 +55,20 @@ fun Weather(forecast: Forecast) {
 }
 
 @Composable
-fun LocationName(name: String) {
+fun LocationName(name: String, navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
+        // Search Button
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .clickable {
+                    navController.navigate(WeatherRoutes.Search.name)
+                }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
@@ -236,5 +232,5 @@ fun getDayOfWeek(timestamp: Int): String {
 @Preview()
 @Composable
 fun WeatherAppPreview() {
-    Weather({ } as Forecast)
+    Weather({ } as Forecast, {} as NavController)
 }
