@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 // * Main
                 composable(route = WeatherRoutes.Main.name) {
-                    WeatherApp(forecastViewModel)
+                    WeatherApp(forecastViewModel, navController)
                 }
                 // * Search
                 composable(route = WeatherRoutes.Search.name) {
@@ -48,6 +49,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     AndroidWeatherAppTheme {
-        WeatherApp({} as ForecastViewModel)
+        WeatherApp({} as ForecastViewModel, {} as NavController)
     }
 }

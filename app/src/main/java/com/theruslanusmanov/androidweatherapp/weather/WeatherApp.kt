@@ -1,6 +1,5 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
+import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
 import java.text.SimpleDateFormat
@@ -40,7 +41,7 @@ import java.util.Locale
 
 
 @Composable
-fun WeatherApp(forecastViewModel: ForecastViewModel) {
+fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavController) {
     AndroidWeatherAppTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -48,15 +49,15 @@ fun WeatherApp(forecastViewModel: ForecastViewModel) {
             color = Color.Black,
         ) {
             val forecast by forecastViewModel.forecastState.observeAsState()
-            forecast?.let { Weather(it) }
+            forecast?.let { Weather(it, navController) }
         }
     }
 }
 
 @Composable
-fun Weather(forecast: Forecast) {
+fun Weather(forecast: Forecast, navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
-        LocationName(name = "Kazan")
+        LocationName(name = "Kazan", navController)
         Temperature(value = forecast.current.temperature2m)
         WeatherDescription(weathercode = forecast.current.weathercode)
         Spacer(modifier = Modifier.height(40.dp))
@@ -65,7 +66,7 @@ fun Weather(forecast: Forecast) {
 }
 
 @Composable
-fun LocationName(name: String) {
+fun LocationName(name: String, navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -77,7 +78,7 @@ fun LocationName(name: String) {
                 .fillMaxWidth()
                 .weight(1f)
                 .clickable {
-                    Log.d("AWA", "CLICKED!")
+                    navController.navigate(WeatherRoutes.Search.name)
                 }
         ) {
             Icon(
@@ -242,5 +243,5 @@ fun getDayOfWeek(timestamp: Int): String {
 @Preview()
 @Composable
 fun WeatherAppPreview() {
-    Weather({ } as Forecast)
+    Weather({ } as Forecast, {} as NavController)
 }
