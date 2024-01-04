@@ -2,7 +2,6 @@ package com.theruslanusmanov.androidweatherapp.search
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,13 +36,16 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
         Log.d("SEARCH", it.toString())
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Header(title = "Search", navController = navController)
-            for (index in 0..searchResults!!.results.size - 1) {
+            for (index in 0 until searchResults!!.results.size) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.background(Color.Blue)
                         .fillMaxWidth()
                         .padding(8.dp)
+                        .clickable {
+                            navController.navigate(WeatherRoutes.Main.name)
+                        }
                 ) {
                     Text(text = searchResults!!.results[index].country.toString(), color = Color.White)
                     Text(text = searchResults!!.results[index].name.toString(), color = Color.White)
