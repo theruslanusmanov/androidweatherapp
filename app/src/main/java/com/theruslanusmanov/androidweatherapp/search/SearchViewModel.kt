@@ -12,8 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) :
-    ViewModel(), LifecycleObserver {
+class SearchViewModel @Inject constructor(
+    private val searchRepository: SearchRepository,
+) : ViewModel(), LifecycleObserver {
+
     private val _searchState = MutableLiveData<Geocode>()
     val searchState: LiveData<Geocode>
         get() = _searchState
