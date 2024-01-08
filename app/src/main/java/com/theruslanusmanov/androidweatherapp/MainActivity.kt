@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -31,6 +32,10 @@ class MainActivity : ComponentActivity() {
 
         // Search ViewModel
         val searchViewModel: SearchViewModel by viewModels()
+
+        // Location ViewModel
+        val locationViewModel: LocationViewModel by viewModels()
+        Log.d("LOCATION_VIEWMODEL_ACTIVITY", locationViewModel.currentLocation.value.toString())
 
         setContent {
             AndroidWeatherAppTheme {
