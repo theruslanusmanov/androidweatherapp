@@ -1,16 +1,15 @@
 package com.theruslanusmanov.androidweatherapp
 
-import android.util.Log
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +24,9 @@ object LocationScheme {
 class LocationViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
 ) : ViewModel(), LifecycleObserver {
-    private val _currentLocation = MutableLiveData<String>()
+    private val _currentLocation = MutableStateFlow<Preferences?>(null)
 
-    val currentLocation: LiveData<String>
+    val currentLocation: StateFlow<Preferences?>
         get() = _currentLocation
 
     init {
@@ -40,9 +39,9 @@ class LocationViewModel @Inject constructor(
             prefs[LocationScheme.FIELD_LATITUDE] = 52.520008
             prefs[LocationScheme.FIELD_LONGITUDE] = 13.404954
         }
-        locationRepository.dataStore.data.collect() {
-            _currentLocation.value = it.toString()
-            Log.d("LOCATION_VIEWMODEL", it.toString())
+
+        locationRepository.dataStore.data.collect {
+            _currentLocation.emit(it)
         }
     }
 }

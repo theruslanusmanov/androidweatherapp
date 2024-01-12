@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +24,8 @@ import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
 import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,7 +40,18 @@ class MainActivity : ComponentActivity() {
 
         // Location ViewModel
         val locationViewModel: LocationViewModel by viewModels()
-        Log.d("LOCATION_VIEWMODEL_ACTIVITY", locationViewModel.currentLocation.value.toString())
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                locationViewModel.currentLocation.collect {
+                    Log.d(
+                        "LOCATION_COLLECT",
+                        it.toString()
+                    )
+                }
+
+            }
+        }
 
         setContent {
             AndroidWeatherAppTheme {
