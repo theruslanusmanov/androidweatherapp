@@ -125,6 +125,7 @@ fun Header(title: String, navController: NavController) {
                 focusedLabelColor = Color.White,
                 cursorColor = Color.White
             ),
+            shape = RoundedCornerShape(48.dp),
             modifier = Modifier.height(48.dp)
         )
     }
