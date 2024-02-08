@@ -32,27 +32,34 @@ import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 @Composable
 fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     val searchResults by searchViewModel.searchState.observeAsState()
-    searchResults?.let {
-        Log.d("SEARCH", it.toString())
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Header(title = "Search", navController = navController)
-            for (index in 0 until searchResults!!.results.size) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.background(Color.Blue)
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            navController.navigate(WeatherRoutes.Main.name)
-                        }
-                ) {
-                    Text(text = searchResults!!.results[index].country.toString(), color = Color.White)
-                    Text(text = searchResults!!.results[index].name.toString(), color = Color.White)
+
+    if (searchResults?.results?.isEmpty() == true) {
+        Text(text = "LOADING...", color = Color.White)
+    } else {
+        searchResults?.let {
+            Log.d("SEARCH", it.toString())
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Header(title = "Search", navController = navController)
+                for (index in 0 until searchResults!!.results.size) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .background(Color.Blue)
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clickable {
+                                navController.navigate(WeatherRoutes.Main.name)
+                            }
+                    ) {
+                        Text(text = searchResults!!.results[index].country.toString(), color = Color.White)
+                        Text(text = searchResults!!.results[index].name.toString(), color = Color.White)
+                    }
                 }
             }
         }
     }
+    
 }
 
 @Composable
