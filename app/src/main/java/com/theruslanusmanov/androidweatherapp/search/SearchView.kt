@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -42,18 +45,20 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                 Header(title = "Search", navController = navController)
                 for (index in 0 until searchResults!!.results.size) {
                     Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .background(Color.Blue)
+                            .height(48.dp)
                             .fillMaxWidth()
-                            .padding(8.dp)
+                            .padding(8.dp, 2.dp)
+                            .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
+                            .background(Color.DarkGray)
                             .clickable {
                                 navController.navigate(WeatherRoutes.Main.name)
                             }
                     ) {
-                        Text(text = searchResults!!.results[index].country.toString(), color = Color.White)
-                        Text(text = searchResults!!.results[index].name.toString(), color = Color.White)
+                        Text(text = searchResults!!.results[index].country.toString(), color = Color.White, modifier = Modifier.padding(start = 48.dp))
+                        Text(text = searchResults!!.results[index].name.toString(), color = Color.White, modifier = Modifier.padding(end = 48.dp))
                     }
                 }
             }
