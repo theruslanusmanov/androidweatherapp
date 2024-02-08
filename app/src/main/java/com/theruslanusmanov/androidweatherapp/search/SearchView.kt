@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -58,8 +59,16 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                                     navController.navigate(WeatherRoutes.Main.name)
                                 }
                         ) {
-                            Text(text = searchResults!!.results[index].country.toString(), color = Color.White, modifier = Modifier.padding(start = 48.dp))
-                            Text(text = searchResults!!.results[index].name.toString(), color = Color.White, modifier = Modifier.padding(end = 48.dp))
+                            Text(
+                                text = searchResults!!.results[index].country.toString(),
+                                color = Color.White,
+                                modifier = Modifier.padding(start = 48.dp)
+                            )
+                            Text(
+                                text = searchResults!!.results[index].name.toString(),
+                                color = Color.White,
+                                modifier = Modifier.padding(end = 48.dp)
+                            )
                         }
                     }
                 }
@@ -67,7 +76,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
         }
     }
 
-    
+
 }
 
 @Composable
@@ -92,23 +101,12 @@ fun Header(title: String, navController: NavController) {
                 tint = Color.White
             )
         }
-        Text(
-            text = title.uppercase(),
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center,
-            style = TextStyle(
+        TextField(
+            value = "Search...", onValueChange = { }, textStyle = TextStyle(
                 fontSize = 32.sp,
                 color = Color.White,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+            )
         )
     }
 }
