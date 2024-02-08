@@ -36,34 +36,37 @@ import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     val searchResults by searchViewModel.searchState.observeAsState()
 
-    if (searchResults?.results?.isEmpty() == true) {
-        Text(text = "LOADING...", color = Color.White)
-    } else {
-        searchResults?.let {
-            Log.d("SEARCH", it.toString())
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Header(title = "Search", navController = navController)
-                for (index in 0 until searchResults!!.results.size) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .height(48.dp)
-                            .fillMaxWidth()
-                            .padding(8.dp, 2.dp)
-                            .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
-                            .background(Color.DarkGray)
-                            .clickable {
-                                navController.navigate(WeatherRoutes.Main.name)
-                            }
-                    ) {
-                        Text(text = searchResults!!.results[index].country.toString(), color = Color.White, modifier = Modifier.padding(start = 48.dp))
-                        Text(text = searchResults!!.results[index].name.toString(), color = Color.White, modifier = Modifier.padding(end = 48.dp))
+    Column(modifier = Modifier.padding(20.dp)) {
+        if (searchResults?.results?.isEmpty() == true) {
+            Text(text = "LOADING...", color = Color.White)
+        } else {
+            searchResults?.let {
+                Log.d("SEARCH", it.toString())
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Header(title = "Search", navController = navController)
+                    for (index in 0 until searchResults!!.results.size) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .height(48.dp)
+                                .fillMaxWidth()
+                                .padding(8.dp, 2.dp)
+                                .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
+                                .background(Color.DarkGray)
+                                .clickable {
+                                    navController.navigate(WeatherRoutes.Main.name)
+                                }
+                        ) {
+                            Text(text = searchResults!!.results[index].country.toString(), color = Color.White, modifier = Modifier.padding(start = 48.dp))
+                            Text(text = searchResults!!.results[index].name.toString(), color = Color.White, modifier = Modifier.padding(end = 48.dp))
+                        }
                     }
                 }
             }
         }
     }
+
     
 }
 
