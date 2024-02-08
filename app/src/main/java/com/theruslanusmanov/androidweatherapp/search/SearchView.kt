@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -83,7 +86,6 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
 fun Header(title: String, navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
         // Search Button
@@ -101,12 +103,29 @@ fun Header(title: String, navController: NavController) {
                 tint = Color.White
             )
         }
-        TextField(
-            value = "Search...", onValueChange = { }, textStyle = TextStyle(
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "Search icon",
+                    tint = Color.White
+                )
+            },
+            textStyle = TextStyle(
                 fontSize = 32.sp,
                 color = Color.White,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
-            )
+            ),
+            colors =  TextFieldDefaults.textFieldColors(
+                textColor = Color.White,
+                backgroundColor = Color.Gray,
+                focusedIndicatorColor = Color.White,
+                focusedLabelColor = Color.White,
+                cursorColor = Color.White
+            ),
+            modifier = Modifier.height(48.dp)
         )
     }
 }
