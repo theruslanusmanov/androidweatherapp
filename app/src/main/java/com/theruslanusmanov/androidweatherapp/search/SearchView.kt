@@ -21,6 +21,9 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -103,9 +106,12 @@ fun Header(navController: NavController) {
                 tint = Color.White
             )
         }
+
+        var searchQuery by remember { mutableStateOf("") }
+
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
@@ -114,11 +120,10 @@ fun Header(navController: NavController) {
                 )
             },
             textStyle = TextStyle(
-                fontSize = 32.sp,
                 color = Color.White,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             ),
-            colors =  TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.White,
                 backgroundColor = Color.Gray,
                 focusedIndicatorColor = Color.White,
