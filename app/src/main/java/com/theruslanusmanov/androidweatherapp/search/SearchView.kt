@@ -47,7 +47,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
             searchResults?.let {
                 Log.d("SEARCH", it.toString())
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Header(title = "Search", navController = navController)
+                    Header(navController = navController)
                     for (index in 0 until searchResults!!.results.size) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -83,7 +83,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
 }
 
 @Composable
-fun Header(title: String, navController: NavController) {
+fun Header(navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
