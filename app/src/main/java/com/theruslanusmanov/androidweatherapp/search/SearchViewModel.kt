@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.search
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,12 +17,18 @@ class SearchViewModel @Inject constructor(
     private val searchRepository: SearchRepository,
 ) : ViewModel(), LifecycleObserver {
 
+    val _searchQuery = mutableStateOf("")
+
     private val _searchState = MutableLiveData<Geocode>()
     val searchState: LiveData<Geocode>
         get() = _searchState
 
     init {
         getSearch()
+    }
+
+    fun search(query: String) {
+        _searchQuery.value = query
     }
 
     private fun getSearch() = viewModelScope.launch {
