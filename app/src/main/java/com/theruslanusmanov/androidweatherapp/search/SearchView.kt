@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -94,8 +95,7 @@ fun Header(navController: NavController, viewModel: SearchViewModel) {
         // Search Button
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+                .width(48.dp)
                 .clickable {
                     navController.navigate(WeatherRoutes.Main.name)
                 }
@@ -131,7 +131,7 @@ fun Header(navController: NavController, viewModel: SearchViewModel) {
                 cursorColor = Color.White
             ),
             shape = RoundedCornerShape(48.dp),
-            modifier = Modifier.height(48.dp)
+            modifier = Modifier.height(48.dp).weight(1f)
         )
     }
 }
