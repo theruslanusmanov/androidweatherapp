@@ -23,17 +23,13 @@ class SearchViewModel @Inject constructor(
     val searchState: LiveData<Geocode>
         get() = _searchState
 
-    init {
-        getSearch()
-    }
-
     fun search(query: String) {
         _searchQuery.value = query
     }
 
-    private fun getSearch() = viewModelScope.launch {
+    fun getSearch(query: String) = viewModelScope.launch {
 
-        when (val result = searchRepository.getSearch()) {
+        when (val result = searchRepository.getSearch(query)) {
             is NetworkResult.Success -> {
 
                 result.data?.let {

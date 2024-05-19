@@ -39,13 +39,16 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     val searchResults by searchViewModel.searchState.observeAsState()
 
     Column(modifier = Modifier.padding(20.dp)) {
+        // Search input
+        SearchInput(navController = navController, searchViewModel)
+
+        // Search results
         if (searchResults?.results?.isEmpty() == true) {
             Text(text = "LOADING...", color = Color.White)
         } else {
             searchResults?.let {
                 Log.d("SEARCH", it.toString())
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    SearchInput(navController = navController, searchViewModel)
                     for (index in 0 until searchResults!!.results.size) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -103,9 +106,13 @@ fun SearchInput(navController: NavController, viewModel: SearchViewModel) {
 
         var searchQuery by remember { mutableStateOf("") }
 
+
         OutlinedTextField(
             value = searchQuery,
-            onValueChange = { searchQuery = it },
+            onValueChange = {
+                searchQuery = it
+                viewModel.getSearch(it)
+            },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
