@@ -1,6 +1,10 @@
 package com.theruslanusmanov.androidweatherapp.search
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +21,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -26,16 +31,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 
+
 @Composable
 fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
+    val context = LocalContext.current
     val searchResults by searchViewModel.searchState.observeAsState()
 
     Column(modifier = Modifier.padding(20.dp)) {
@@ -60,6 +69,15 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                                 .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
                                 .background(Color.DarkGray)
                                 .clickable {
+                                    // Save city.
+                                    val sharedPreference =  context.getSharedPreferences("PREFERENCE_NAME",
+                                        Context.MODE_PRIVATE)
+                                    var editor = sharedPreference.edit()
+                                    editor.putFloat("latitude", searchResults!!.results[index].latitude!!.toFloat())
+                                    editor.putFloat("longitude", searchResults!!.results[index].longitude!!.toFloat())
+                                    editor.apply()
+
+                                    // Redirect to Main screen.
                                     navController.navigate(WeatherRoutes.Main.name)
                                 }
                         ) {
@@ -132,7 +150,9 @@ fun SearchInput(navController: NavController, viewModel: SearchViewModel) {
                 cursorColor = Color.White
             ),
             shape = RoundedCornerShape(48.dp),
-            modifier = Modifier.height(48.dp).weight(1f)
+            modifier = Modifier
+                .height(48.dp)
+                .weight(1f)
         )
     }
 }
