@@ -131,6 +131,9 @@ fun SearchInput(navController: NavController, viewModel: SearchViewModel) {
                 searchQuery = it
                 viewModel.getSearch(it)
             },
+            placeholder = {
+                Text(text = "Search...")
+            },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
