@@ -232,5 +232,9 @@ fun getDayOfWeek(timestamp: Int): String {
 @Preview()
 @Composable
 fun WeatherAppPreview() {
-    Weather({ } as Forecast, {} as NavController)
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
+        Temperature(value = 16.0)
+        WeatherDescription(weathercode = 0)
+        Spacer(modifier = Modifier.height(40.dp))
+    }
 }
