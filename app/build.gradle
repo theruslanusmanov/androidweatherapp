@@ -12,8 +12,8 @@ android {
     defaultConfig {
         applicationId "com.theruslanusmanov.androidweatherapp"
         minSdk 30
-        targetSdk 33
-        versionCode 2
+        targetSdk 34
+        versionCode 3
         versionName '1.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -113,4 +113,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation 'androidx.test:runner:1.6.1'
     androidTestImplementation 'androidx.test:rules:1.6.1'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.13.1'
 }
