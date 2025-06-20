@@ -1,9 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.ui.theme
 
-import androidx.compose.material.Typography
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.theruslanusmanov.androidweatherapp.R
@@ -15,34 +13,8 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
-@OptIn(ExperimentalTextApi::class)
-val InterFont = GoogleFont(name = "Inter")
+val fontName = GoogleFont("Inter")
 
-@OptIn(ExperimentalTextApi::class)
 val fontFamily = FontFamily(
-    Font(googleFont = InterFont, fontProvider = provider),
-    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Normal),
-    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Medium),
-    Font(googleFont = InterFont, fontProvider = provider, weight = FontWeight.Bold),
-)
-
-// Set of Material typography styles to start with
-val Typography = Typography(
-//    body1 = TextStyle(
-//        fontFamily = fontFamily,
-//        fontWeight = FontWeight.Normal,
-//        fontSize = 16.sp
-//    )
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
+    Font(googleFont = fontName, fontProvider = provider)
 )

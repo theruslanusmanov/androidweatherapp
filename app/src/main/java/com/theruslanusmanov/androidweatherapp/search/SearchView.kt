@@ -1,10 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.search
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
@@ -145,13 +139,13 @@ fun SearchInput(navController: NavController, viewModel: SearchViewModel) {
                 color = Color.White,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             ),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.White,
-                backgroundColor = Color.Gray,
-                focusedIndicatorColor = Color.White,
-                focusedLabelColor = Color.White,
-                cursorColor = Color.White
-            ),
+//            colors = TextFieldDefaults.textFieldColors(
+//                textColor = Color.White,
+//                backgroundColor = Color.Gray,
+//                focusedIndicatorColor = Color.White,
+//                focusedLabelColor = Color.White,
+//                cursorColor = Color.White
+//            ),
             shape = RoundedCornerShape(48.dp),
             modifier = Modifier
                 .height(48.dp)

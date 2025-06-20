@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -233,7 +233,7 @@ fun getDayOfWeek(timestamp: Int): String {
 @Composable
 fun WeatherAppPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
-        Temperature(value = 16.0)
+        Temperature(value = -10.0)
         WeatherDescription(weathercode = 0)
         Spacer(modifier = Modifier.height(40.dp))
     }
