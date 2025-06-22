@@ -32,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
-import com.theruslanusmanov.androidweatherapp.ui.theme.fontFamily
+import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
+import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -101,14 +102,9 @@ fun LocationName(name: String, navController: NavController) {
 fun Temperature(value: Double = 0.0) {
     Text(
         text = "$value°",
-        fontFamily = fontFamily,
         fontWeight = FontWeight.W700,
         textAlign = TextAlign.Center,
-        style = TextStyle(
-            fontSize = 120.sp,
-            color = Color.White,
-            platformStyle = PlatformTextStyle(includeFontPadding = false)
-        ),
+        style = weatherTypography.displayLarge,
         modifier = Modifier.absoluteOffset(22.dp)
     )
 }
@@ -232,9 +228,14 @@ fun getDayOfWeek(timestamp: Int): String {
 @Preview()
 @Composable
 fun WeatherAppPreview() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
-        Temperature(value = -10.0)
-        WeatherDescription(weathercode = 0)
-        Spacer(modifier = Modifier.height(40.dp))
+    AndroidWeatherAppTheme {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Temperature(value = -10.0)
+            WeatherDescription(weathercode = 0)
+            Spacer(modifier = Modifier.height(40.dp))
+        }
     }
 }

@@ -3,21 +3,25 @@ package com.theruslanusmanov.androidweatherapp.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-//private val DarkColorPalette = darkColors(
-//    primary = Purple200,
-//    primaryVariant = Purple700,
-//    secondary = Teal200
-//)
-//
-//private val LightColorPalette = lightColors(
-//    primary = Purple500,
-//    primaryVariant = Purple700,
-//    secondary = Teal200
+private val LightColorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    // ..
+)
+private val DarkColorScheme = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    // ..
+)
 
     /* Other default colors to override
     background = Color.White,
@@ -30,11 +34,11 @@ import androidx.compose.ui.unit.sp
 //)
 
 // Create a custom Typography object
-val myTypography = Typography(
+val weatherTypography = Typography(
     displayLarge = TextStyle(
-        fontFamily = fontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 57.sp,
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 120.sp,
         lineHeight = 64.sp,
         letterSpacing = 0.sp
     ),
@@ -46,14 +50,10 @@ fun AndroidWeatherAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
 
     MaterialTheme(
-        typography = myTypography,
+        colorScheme = DarkColorScheme,
+        typography = weatherTypography,
         shapes = Shapes,
         content = content
     )
