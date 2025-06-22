@@ -136,6 +136,7 @@ fun LocationName(name: String) {
 fun Temperature(value: Double = 0.0) {
     Text(
         text = "$value°",
+        color = Color(165, 207, 234, 255),
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
         modifier = Modifier
