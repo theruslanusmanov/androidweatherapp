@@ -106,10 +106,10 @@ fun Date(date: String = "Today") {
         text = date,
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
+        color = Color(253, 131, 131, 191),
         style = TextStyle(
             fontSize = 20.sp,
             fontWeight = FontWeight.Black,
-            color = textColor,
         ),
         modifier = Modifier
             .fillMaxWidth()

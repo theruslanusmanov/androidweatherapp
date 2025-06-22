@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = WeatherRoutes.Search.name
+                        startDestination = WeatherRoutes.Main.name
                     ) {
                         // * Main
                         composable(route = WeatherRoutes.Main.name) {
