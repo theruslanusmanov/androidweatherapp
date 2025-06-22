@@ -43,7 +43,7 @@ import java.util.Locale
 val textColor = Color.White
 
 @Composable
-fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavController) {
+fun WeatherView(forecastViewModel: ForecastViewModel, navController: NavController) {
     val forecast by forecastViewModel.forecastState.observeAsState()
     forecast?.let { Weather(it, navController) }
 }
@@ -363,9 +363,9 @@ fun SearchButton(onClick: () -> Unit) {
     }
 }
 
-@Preview(name = "Weather screen")
+@Preview(name = "Weather screen", group = "Screen")
 @Composable
-fun WeatherAppPreview() {
+fun WeatherViewPreview() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
@@ -393,50 +393,50 @@ fun WeatherAppPreview() {
     }
 }
 
-@Preview(name = "Header")
+@Preview(name = "Header", group = "Component")
 @Composable
 fun HeaderPreview() {
     Header()
 }
 
-@Preview(name = "Date")
+@Preview(name = "Date", group = "Component")
 @Composable
 fun DatePreview() {
     Date()
 }
 
-@Preview(name = "Location")
+@Preview(name = "Location", group = "Component")
 @Composable
 fun LocationPreview() {
     LocationName(name = "Kazan")
 }
 
-@Preview(name = "Temperature")
+@Preview(name = "Temperature", group = "Component")
 @Composable
 fun TemperaturePreview() {
     Temperature(value = -10.0)
 }
 
-@Preview(name = "Weather description")
+@Preview(name = "Weather description", group = "Component")
 @Composable
 fun WeatherDescriptionPreview() {
     WeatherDescription(weathercode = 95)
 }
 
-@Preview(name = "Short info block")
+@Preview(name = "Short info block", group = "Component")
 @Composable
 fun ShortInfoBlockPreview() {
     ShortInfoBlock(icon = 1, value = 0.0)
 }
 
-@Preview(name = "Date button")
+@Preview(name = "Date button", group = "Component")
 @Composable
 fun DateButtonPreview() {
     DateButton()
 }
 
 
-@Preview(name = "Search button")
+@Preview(name = "Search button", group = "Component")
 @Composable
 fun SearchButtonPreview() {
     SearchButton { }

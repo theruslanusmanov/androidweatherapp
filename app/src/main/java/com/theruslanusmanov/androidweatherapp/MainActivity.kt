@@ -23,7 +23,7 @@ import com.theruslanusmanov.androidweatherapp.search.SearchViewModel
 import com.theruslanusmanov.androidweatherapp.settings.SettingsView
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
-import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
+import com.theruslanusmanov.androidweatherapp.weather.WeatherView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // * Main
                         composable(route = WeatherRoutes.Main.name) {
-                            WeatherApp(forecastViewModel, navController)
+                            WeatherView(forecastViewModel, navController)
                         }
                         // * Search
                         composable(route = WeatherRoutes.Search.name) {
@@ -90,6 +90,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     AndroidWeatherAppTheme {
-        WeatherApp({} as ForecastViewModel, {} as NavController)
+        WeatherView({} as ForecastViewModel, {} as NavController)
     }
 }
