@@ -6,6 +6,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,7 @@ private val DarkColorScheme = darkColorScheme(
 // Create a custom Typography object
 val weatherTypography = Typography(
     displayLarge = TextStyle(
+        color = Color.White,
         fontFamily = interFontFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 120.sp,
@@ -50,6 +52,11 @@ fun AndroidWeatherAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val colorScheme = if (darkTheme) {
+        DarkColorScheme
+    } else {
+        LightColorScheme
+    }
 
     MaterialTheme(
         colorScheme = DarkColorScheme,

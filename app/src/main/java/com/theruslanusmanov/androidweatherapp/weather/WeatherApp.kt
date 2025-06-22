@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -102,25 +103,36 @@ fun LocationName(name: String, navController: NavController) {
 fun Temperature(value: Double = 0.0) {
     Text(
         text = "$value°",
-        fontWeight = FontWeight.W700,
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
-        modifier = Modifier.absoluteOffset(22.dp)
+        modifier = Modifier.absoluteOffset(22.dp).fillMaxWidth()
     )
 }
 
 @Composable
 fun WeatherDescription(weathercode: Int) {
-    Text(
-        text = getWeatherCodeDescription(weathercode),
-        fontWeight = FontWeight.Medium,
-        textAlign = TextAlign.Center,
-        style = TextStyle(
-            fontSize = 32.sp,
-            color = Color.White,
-            platformStyle = PlatformTextStyle(includeFontPadding = false)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            painter = painterResource(id = getWeatherIcon(weathercode)),
+            contentDescription = "Weather icon",
+            tint = Color.White,
         )
-    )
+        Spacer(Modifier.width(6.dp))
+        Text(
+            text = getWeatherCodeDescription(weathercode),
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 24.sp,
+                color = Color.White,
+                platformStyle = PlatformTextStyle(includeFontPadding = false)
+            )
+        )
+    }
 }
 
 @Composable
@@ -225,17 +237,27 @@ fun getDayOfWeek(timestamp: Int): String {
     return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
 }
 
-@Preview()
+@Preview(name = "Weather screen")
 @Composable
 fun WeatherAppPreview() {
-    AndroidWeatherAppTheme {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(20.dp)
-        ) {
-            Temperature(value = -10.0)
-            WeatherDescription(weathercode = 0)
-            Spacer(modifier = Modifier.height(40.dp))
-        }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(20.dp)
+    ) {
+        Temperature(value = -10.0)
+        WeatherDescription(weathercode = 0)
+        Spacer(modifier = Modifier.height(40.dp))
     }
+}
+
+@Preview(name = "Temperature")
+@Composable
+fun TemperaturePreview() {
+    Temperature(value = -10.0)
+}
+
+@Preview(name = "Weather description")
+@Composable
+fun WeatherDescriptionPreview() {
+    WeatherDescription(weathercode = 0)
 }
