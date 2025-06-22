@@ -300,6 +300,41 @@ fun ShortInfoBlock(icon: Int, value: Double = 0.0) {
 }
 
 @Composable
+fun DateButton() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .width(100.dp)
+            .background(Color.DarkGray, shape = RoundedCornerShape(200.dp))
+            .clip(RoundedCornerShape(100.dp, 100.dp, 100.dp, 100.dp))
+            .aspectRatio(1f)
+    ) {
+        Text(
+            text = "Sat",
+            color = Color(253, 131, 131, 191),
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            color = textColor,
+            text = "13",
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            color = Color(255, 255, 255, 191),
+            text = "Feb",
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 fun SearchButton(onClick: () -> Unit) {
     Button(
         colors = ButtonColors(
@@ -392,6 +427,13 @@ fun WeatherDescriptionPreview() {
 fun ShortInfoBlockPreview() {
     ShortInfoBlock(icon = 1, value = 0.0)
 }
+
+@Preview(name = "Date button")
+@Composable
+fun DateButtonPreview() {
+    DateButton()
+}
+
 
 @Preview(name = "Search button")
 @Composable
