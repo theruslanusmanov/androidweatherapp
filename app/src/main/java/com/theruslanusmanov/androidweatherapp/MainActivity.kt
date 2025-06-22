@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.search.SearchView
 import com.theruslanusmanov.androidweatherapp.search.SearchViewModel
+import com.theruslanusmanov.androidweatherapp.settings.SettingsView
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
 import com.theruslanusmanov.androidweatherapp.weather.WeatherApp
@@ -71,6 +72,10 @@ class MainActivity : ComponentActivity() {
                         // * Search
                         composable(route = WeatherRoutes.Search.name) {
                             SearchView(searchViewModel, navController)
+                        }
+                        // * Settings
+                        composable(route = WeatherRoutes.Settings.name) {
+                            SettingsView()
                         }
                     }
                 }
