@@ -25,6 +25,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -86,12 +87,14 @@ fun Header() {
         Icon(
             painter = painterResource(id = R.drawable.ic_navigation),
             contentDescription = "Search icon",
-            tint = textColor
+            tint = textColor,
+            modifier = Modifier.rotate(125f).size(48.dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_more),
             contentDescription = "Search icon",
-            tint = textColor
+            tint = textColor,
+            modifier = Modifier.size(48.dp)
         )
     }
 }
@@ -162,7 +165,6 @@ fun Temperature(value: Double = 0.0) {
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
         modifier = Modifier
-//            .absoluteOffset(22.dp)
             .fillMaxWidth()
     )
 }
@@ -381,6 +383,12 @@ fun WeatherAppPreview() {
     }
 }
 
+@Preview(name = "Header")
+@Composable
+fun HeaderPreview() {
+    Header()
+}
+
 @Preview(name = "Date")
 @Composable
 fun DatePreview() {
@@ -409,4 +417,10 @@ fun WeatherDescriptionPreview() {
 @Composable
 fun ShortInfoBlockPreview() {
     ShortInfoBlock(icon = 1, value = 0.0)
+}
+
+@Preview(name = "Search button")
+@Composable
+fun SearchButtonPreview() {
+    SearchButton {  }
 }
