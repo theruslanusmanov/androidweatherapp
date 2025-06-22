@@ -119,7 +119,7 @@ fun Date(date: String = "Today") {
 @Composable
 fun LocationName(name: String) {
     Text(
-        text = name.uppercase(),
+        text = name,
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
         style = TextStyle(
