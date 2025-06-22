@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -39,6 +41,7 @@ import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+val textColor = Color.White
 
 @Composable
 fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavController) {
@@ -52,9 +55,31 @@ fun Weather(forecast: Forecast, navController: NavController) {
         LocationName(name = "Kazan", navController)
         Temperature(value = forecast.current.temperature2m)
         WeatherDescription(weathercode = forecast.current.weathercode)
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(50.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            ShortInfoBlock(icon = 1, value = 0.0)
+            ShortInfoBlock(icon = 1, value = 0.0)
+            ShortInfoBlock(icon = 1, value = 0.0)
+        }
+        Spacer(modifier = Modifier.height(50.dp))
         TenDayForecast(dailyForecast = forecast.daily)
     }
+}
+
+@Composable
+fun Date(date: String = "Today") {
+    Text(
+        text = date,
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Center,
+        style = TextStyle(
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Black,
+            color = textColor,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+    )
 }
 
 @Composable
@@ -76,7 +101,7 @@ fun LocationName(name: String, navController: NavController) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = "Search icon",
-                tint = Color.White
+                tint = textColor
             )
         }
         Text(
@@ -85,7 +110,7 @@ fun LocationName(name: String, navController: NavController) {
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontSize = 32.sp,
-                color = Color.White,
+                color = textColor,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             ),
             modifier = Modifier
@@ -107,7 +132,7 @@ fun Temperature(value: Double = 0.0) {
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
         modifier = Modifier
-            .absoluteOffset(22.dp)
+//            .absoluteOffset(22.dp)
             .fillMaxWidth()
     )
 }
@@ -122,7 +147,7 @@ fun WeatherDescription(weathercode: Int) {
         Icon(
             painter = painterResource(id = getWeatherIcon(weathercode)),
             contentDescription = "Weather icon",
-            tint = Color.White,
+            tint = textColor,
         )
         Spacer(Modifier.width(6.dp))
         Text(
@@ -131,7 +156,7 @@ fun WeatherDescription(weathercode: Int) {
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontSize = 24.sp,
-                color = Color.White,
+                color = textColor,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             )
         )
@@ -152,7 +177,7 @@ fun TenDayForecastRow(
     ) {
         Text(
             text = getDayOfWeek(time),
-            color = Color.White,
+            color = textColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(2f)
@@ -160,14 +185,14 @@ fun TenDayForecastRow(
         Icon(
             painter = painterResource(id = getWeatherIcon(weatherCode)),
             contentDescription = "Weather icon",
-            tint = Color.White,
+            tint = textColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         )
         Text(
             text = "${String.format("%.1f", temperature)}°".uppercase(),
-            color = Color.White,
+            color = textColor,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .fillMaxWidth()
@@ -187,7 +212,7 @@ fun TenDayForecast(dailyForecast: Daily) {
             .padding(15.dp)
     ) {
         Text(
-            text = "10-Day Forecast".uppercase(), fontWeight = FontWeight.Bold, color = Color.White
+            text = "10-Day Forecast".uppercase(), fontWeight = FontWeight.Bold, color = textColor
         )
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             for (index in 0..9) {
@@ -241,6 +266,33 @@ fun getDayOfWeek(timestamp: Int): String {
     return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
 }
 
+@Composable
+fun ShortInfoBlock(icon: Int, value: Double = 0.0) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .width(100.dp)
+            .background(Color.DarkGray, shape = RoundedCornerShape(200.dp))
+            .clip(RoundedCornerShape(100.dp, 100.dp, 100.dp, 100.dp))
+            .aspectRatio(1f)
+    ) {
+        Icon(
+            painter = painterResource(id = getWeatherIcon(icon)),
+            contentDescription = "Weather icon",
+            tint = textColor,
+            modifier = Modifier.size(48.dp)
+        )
+        Text(
+            color = textColor,
+            text = "$value°",
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
 @Preview(name = "Weather screen")
 @Composable
 fun WeatherAppPreview() {
@@ -248,11 +300,30 @@ fun WeatherAppPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
     ) {
+        Date()
         LocationName(name = "Kazan", rememberNavController())
         Temperature(value = -10.0)
         WeatherDescription(weathercode = 0)
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(50.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            ShortInfoBlock(icon = 1, value = 0.0)
+            ShortInfoBlock(icon = 1, value = 0.0)
+            ShortInfoBlock(icon = 1, value = 0.0)
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+        Text(
+            text = "Daily",
+            textAlign = TextAlign.Start,
+            style = weatherTypography.headlineLarge,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
+}
+
+@Preview(name = "Date")
+@Composable
+fun DatePreview() {
+    Date()
 }
 
 @Preview(name = "Location")
@@ -270,5 +341,11 @@ fun TemperaturePreview() {
 @Preview(name = "Weather description")
 @Composable
 fun WeatherDescriptionPreview() {
-    WeatherDescription(weathercode = 0)
+    WeatherDescription(weathercode = 95)
+}
+
+@Preview(name = "Short info block")
+@Composable
+fun ShortInfoBlockPreview() {
+    ShortInfoBlock(icon = 1, value = 0.0)
 }
