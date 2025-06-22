@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavControlle
 @Composable
 fun Weather(forecast: Forecast, navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
+        Date()
         LocationName(name = "Kazan", navController)
         Temperature(value = forecast.current.temperature2m)
         WeatherDescription(weathercode = forecast.current.weathercode)
@@ -62,6 +64,14 @@ fun Weather(forecast: Forecast, navController: NavController) {
             ShortInfoBlock(icon = 1, value = 0.0)
         }
         Spacer(modifier = Modifier.height(50.dp))
+        Text(
+            text = "Daily",
+            color = textColor,
+            textAlign = TextAlign.Start,
+            style = weatherTypography.headlineLarge,
+            modifier = Modifier.fillMaxWidth()
+        )
+        SearchButton({})
         TenDayForecast(dailyForecast = forecast.daily)
     }
 }
@@ -293,6 +303,34 @@ fun ShortInfoBlock(icon: Int, value: Double = 0.0) {
     }
 }
 
+@Composable
+fun SearchButton(onClick: () -> Unit) {
+    Button(
+        colors = ButtonColors(
+            containerColor = Color.Black,
+            contentColor = Color.White,
+            disabledContainerColor = Color.Black,
+            disabledContentColor = Color.White
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp), onClick = { onClick() }
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_search),
+                contentDescription = "Search icon",
+                tint = textColor
+            )
+            Text(text = "Search", style = weatherTypography.bodyMedium)
+        }
+    }
+}
+
 @Preview(name = "Weather screen")
 @Composable
 fun WeatherAppPreview() {
@@ -313,10 +351,12 @@ fun WeatherAppPreview() {
         Spacer(modifier = Modifier.height(50.dp))
         Text(
             text = "Daily",
+            color = textColor,
             textAlign = TextAlign.Start,
             style = weatherTypography.headlineLarge,
             modifier = Modifier.fillMaxWidth()
         )
+        SearchButton({})
     }
 }
 
