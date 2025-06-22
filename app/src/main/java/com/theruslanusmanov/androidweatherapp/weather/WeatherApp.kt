@@ -53,6 +53,7 @@ fun WeatherApp(forecastViewModel: ForecastViewModel, navController: NavControlle
 @Composable
 fun Weather(forecast: Forecast, navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
+        Header()
         Date()
         LocationName(name = "Kazan", navController)
         Temperature(value = forecast.current.temperature2m)
@@ -73,6 +74,25 @@ fun Weather(forecast: Forecast, navController: NavController) {
         )
         SearchButton({})
         TenDayForecast(dailyForecast = forecast.daily)
+    }
+}
+
+@Composable
+fun Header() {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_navigation),
+            contentDescription = "Search icon",
+            tint = textColor
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_more),
+            contentDescription = "Search icon",
+            tint = textColor
+        )
     }
 }
 
@@ -307,7 +327,7 @@ fun ShortInfoBlock(icon: Int, value: Double = 0.0) {
 fun SearchButton(onClick: () -> Unit) {
     Button(
         colors = ButtonColors(
-            containerColor = Color.Black,
+            containerColor = Color.DarkGray,
             contentColor = Color.White,
             disabledContainerColor = Color.Black,
             disabledContentColor = Color.White
@@ -338,6 +358,7 @@ fun WeatherAppPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
     ) {
+        Header()
         Date()
         LocationName(name = "Kazan", rememberNavController())
         Temperature(value = -10.0)
@@ -356,7 +377,7 @@ fun WeatherAppPreview() {
             style = weatherTypography.headlineLarge,
             modifier = Modifier.fillMaxWidth()
         )
-        SearchButton({})
+        SearchButton {}
     }
 }
 
