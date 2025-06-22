@@ -1,5 +1,6 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +35,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
-import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -138,6 +138,7 @@ fun WeatherDescription(weathercode: Int) {
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun TenDayForecastRow(
     time: Int,
@@ -247,6 +248,7 @@ fun WeatherAppPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
     ) {
+        LocationName(name = "Kazan", rememberNavController())
         Temperature(value = -10.0)
         WeatherDescription(weathercode = 0)
         Spacer(modifier = Modifier.height(40.dp))
