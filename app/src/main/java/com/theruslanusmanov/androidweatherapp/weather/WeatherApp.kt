@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
@@ -105,7 +106,9 @@ fun Temperature(value: Double = 0.0) {
         text = "$value°",
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
-        modifier = Modifier.absoluteOffset(22.dp).fillMaxWidth()
+        modifier = Modifier
+            .absoluteOffset(22.dp)
+            .fillMaxWidth()
     )
 }
 
@@ -248,6 +251,12 @@ fun WeatherAppPreview() {
         WeatherDescription(weathercode = 0)
         Spacer(modifier = Modifier.height(40.dp))
     }
+}
+
+@Preview(name = "Location")
+@Composable
+fun LocationPreview() {
+    LocationName(name = "Kazan", rememberNavController())
 }
 
 @Preview(name = "Temperature")
