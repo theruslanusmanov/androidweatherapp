@@ -1,7 +1,10 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
 import android.annotation.SuppressLint
+import android.provider.CalendarContract.Colors
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -319,30 +324,36 @@ fun DateButton() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .width(100.dp)
-            .background(Color.DarkGray, shape = RoundedCornerShape(200.dp))
-            .clip(RoundedCornerShape(100.dp, 100.dp, 100.dp, 100.dp))
+            //.clip(RoundedCornerShape(100.dp, 100.dp, 100.dp, 100.dp))
             .aspectRatio(1f)
+            .border(
+                width = 1.dp,
+                color = Color(253, 131, 131, 191),
+                shape = RoundedCornerShape(100.dp)
+            )
     ) {
         Text(
             text = "Sat",
             color = Color(253, 131, 131, 191),
             textAlign = TextAlign.Center,
+            fontSize = 16.sp,
             style = weatherTypography.bodyMedium,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.offset(0.dp, 12.dp)
         )
         Text(
             color = textColor,
             text = "13",
+            fontSize = 48.sp,
             textAlign = TextAlign.Center,
             style = weatherTypography.bodyMedium,
-            modifier = Modifier.fillMaxWidth()
         )
         Text(
             color = Color(255, 255, 255, 191),
             text = "Feb",
+            fontSize = 16.sp,
             textAlign = TextAlign.Center,
             style = weatherTypography.bodyMedium,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.offset(0.dp, -12.dp)
         )
     }
 }

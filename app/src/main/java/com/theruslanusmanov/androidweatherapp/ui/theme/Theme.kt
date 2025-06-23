@@ -41,7 +41,7 @@ val weatherTypography = Typography(
         fontFamily = interFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 24.sp,
-        lineHeight = 24.sp,
+        lineHeight = 12.sp,
         letterSpacing = 0.sp
     ),
     headlineLarge  = TextStyle(
