@@ -389,6 +389,12 @@ fun WeatherViewPreview() {
             style = weatherTypography.headlineLarge,
             modifier = Modifier.fillMaxWidth()
         )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            DateButton()
+        }
         SearchButton {}
     }
 }
