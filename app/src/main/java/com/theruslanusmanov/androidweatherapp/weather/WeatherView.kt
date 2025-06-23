@@ -3,6 +3,7 @@ package com.theruslanusmanov.androidweatherapp.weather
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -70,6 +71,17 @@ fun Weather(forecast: Forecast, navController: NavController) {
             style = weatherTypography.headlineLarge,
             modifier = Modifier.fillMaxWidth()
         )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DateButton()
+                DateForecast()
+            }
+        }
         SearchButton {
             navController.navigate(WeatherRoutes.Search.name)
         }
@@ -336,6 +348,94 @@ fun DateButton() {
 }
 
 @Composable
+fun DateForecast() {
+    Row(
+        horizontalArrangement = Arrangement.Absolute.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            Text(
+                color = textColor,
+                text = "-7",
+                textAlign = TextAlign.Center,
+                style = weatherTypography.bodyMedium,
+            )
+            Text(
+                color = textColor,
+                text = "-11",
+                textAlign = TextAlign.Center,
+                style = weatherTypography.bodyMedium,
+            )
+        }
+        Column {
+            Row {
+                Icon(
+                    painter = painterResource(id = getWeatherIcon(1)),
+                    contentDescription = "Weather icon",
+                    tint = textColor,
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    color = textColor,
+                    text = "-8",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+            }
+            Row {
+                Icon(
+                    painter = painterResource(id = getWeatherIcon(2)),
+                    contentDescription = "Weather icon",
+                    tint = textColor,
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    color = textColor,
+                    text = "-8",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+            }
+        }
+        Column {
+            Row {
+                Icon(
+                    painter = painterResource(id = getWeatherIcon(1)),
+                    contentDescription = "Weather icon",
+                    tint = textColor,
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    color = textColor,
+                    text = "-8",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+            }
+            Row {
+                Icon(
+                    painter = painterResource(id = getWeatherIcon(1)),
+                    contentDescription = "Weather icon",
+                    tint = textColor,
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    color = textColor,
+                    text = "-8",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun SearchButton(onClick: () -> Unit) {
     Button(
         colors = ButtonColors(
@@ -393,7 +493,12 @@ fun WeatherViewPreview() {
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.fillMaxWidth()
         ) {
-            DateButton()
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DateButton()
+                DateForecast()
+            }
         }
         SearchButton {}
     }
@@ -439,6 +544,12 @@ fun ShortInfoBlockPreview() {
 @Composable
 fun DateButtonPreview() {
     DateButton()
+}
+
+@Preview(name = "Date forecast", group = "Component")
+@Composable
+fun DateForecastPreview() {
+    DateForecast()
 }
 
 
