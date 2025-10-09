@@ -13,7 +13,7 @@ val interFontFamily =
         Font(
             R.font.inter,
             variationSettings = FontVariation.Settings(
-                FontVariation.weight(600),
+                FontVariation.weight(700),
                 FontVariation.slant(0f),
             )
         ),

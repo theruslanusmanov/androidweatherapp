@@ -53,40 +53,36 @@ fun WeatherView(forecastViewModel: ForecastViewModel, navController: NavControll
 @Composable
 fun Weather(forecast: Forecast, navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(20.dp)) {
-        Header()
+//        Header()
+        Spacer(Modifier.height(64.dp))
         Date()
         LocationName(name = "Kazan")
         Temperature(value = forecast.current.temperature2m)
         WeatherDescription(weathercode = forecast.current.weathercode)
         Spacer(modifier = Modifier.height(50.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            ShortInfoBlock(icon = 1, value = 0.0)
-            ShortInfoBlock(icon = 1, value = 0.0)
-            ShortInfoBlock(icon = 1, value = 0.0)
-        }
         Spacer(modifier = Modifier.height(50.dp))
-        Text(
-            text = "Daily",
-            color = textColor,
-            textAlign = TextAlign.Start,
-            style = weatherTypography.headlineLarge,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                DateButton()
-                DateForecast()
-            }
-        }
-        SearchButton {
-            navController.navigate(WeatherRoutes.Search.name)
-        }
-        TenDayForecast(dailyForecast = forecast.daily)
+//        Text(
+//            text = "Daily",
+//            color = textColor,
+//            textAlign = TextAlign.Start,
+//            style = weatherTypography.headlineLarge,
+//            modifier = Modifier.fillMaxWidth()
+//        )
+//        Column(
+//            horizontalAlignment = Alignment.Start,
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                DateButton()
+//                DateForecast()
+//            }
+//        }
+//        SearchButton {
+//            navController.navigate(WeatherRoutes.Search.name)
+//        }
+//        TenDayForecast(dailyForecast = forecast.daily)
     }
 }
 
@@ -120,10 +116,7 @@ fun Date(date: String = "Today") {
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
         color = Color(253, 131, 131, 191),
-        style = TextStyle(
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Black,
-        ),
+        style = weatherTypography.bodyLarge,
         modifier = Modifier
             .fillMaxWidth()
     )
@@ -135,11 +128,8 @@ fun LocationName(name: String) {
         text = name,
         fontWeight = FontWeight.Medium,
         textAlign = TextAlign.Center,
-        style = TextStyle(
-            fontSize = 32.sp,
-            color = textColor,
-            platformStyle = PlatformTextStyle(includeFontPadding = false)
-        ),
+        style = weatherTypography.bodyMedium,
+        color = Color.White,
         modifier = Modifier
             .fillMaxWidth()
     )
@@ -149,9 +139,9 @@ fun LocationName(name: String) {
 fun Temperature(value: Double = 0.0) {
     Text(
         text = "$value°",
-        color = Color(165, 207, 234, 255),
+        color = Color.White/*Color(165, 207, 234, 255)*/,
         textAlign = TextAlign.Center,
-        style = weatherTypography.displayLarge,
+        style = weatherTypography.headlineLarge,
         modifier = Modifier
             .fillMaxWidth()
     )
@@ -168,17 +158,15 @@ fun WeatherDescription(weathercode: Int) {
             painter = painterResource(id = getWeatherIcon(weathercode)),
             contentDescription = "Weather icon",
             tint = textColor,
+            modifier = Modifier.size(14.dp)
         )
         Spacer(Modifier.width(6.dp))
         Text(
             text = getWeatherCodeDescription(weathercode),
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontSize = 24.sp,
-                color = textColor,
-                platformStyle = PlatformTextStyle(includeFontPadding = false)
-            )
+            style = weatherTypography.bodyLarge,
+            color = Color.White
         )
     }
 }
@@ -284,33 +272,6 @@ fun getWeatherIcon(weatherCode: Int): Int {
 
 fun getDayOfWeek(timestamp: Int): String {
     return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
-}
-
-@Composable
-fun ShortInfoBlock(icon: Int, value: Double = 0.0) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(100.dp)
-            .background(Color.DarkGray, shape = RoundedCornerShape(200.dp))
-            .clip(RoundedCornerShape(100.dp, 100.dp, 100.dp, 100.dp))
-            .aspectRatio(1f)
-    ) {
-        Icon(
-            painter = painterResource(id = getWeatherIcon(icon)),
-            contentDescription = "Weather icon",
-            tint = textColor,
-            modifier = Modifier.size(48.dp)
-        )
-        Text(
-            color = textColor,
-            text = "$value°",
-            textAlign = TextAlign.Center,
-            style = weatherTypography.bodyMedium,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
 }
 
 @Composable
@@ -477,17 +438,12 @@ fun WeatherViewPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
     ) {
-        Header()
+//        Header()
         Date()
         LocationName(name = "Kazan")
         Temperature(value = -10.0)
         WeatherDescription(weathercode = 0)
         Spacer(modifier = Modifier.height(50.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            ShortInfoBlock(icon = 1, value = 0.0)
-            ShortInfoBlock(icon = 1, value = 0.0)
-            ShortInfoBlock(icon = 1, value = 0.0)
-        }
         Spacer(modifier = Modifier.height(50.dp))
         Text(
             text = "Daily",
@@ -507,7 +463,7 @@ fun WeatherViewPreview() {
                 DateForecast()
             }
         }
-        SearchButton {}
+//        SearchButton {}
     }
 }
 
@@ -539,12 +495,6 @@ fun TemperaturePreview() {
 @Composable
 fun WeatherDescriptionPreview() {
     WeatherDescription(weathercode = 95)
-}
-
-@Preview(name = "Short info block", group = "Component")
-@Composable
-fun ShortInfoBlockPreview() {
-    ShortInfoBlock(icon = 1, value = 0.0)
 }
 
 @Preview(name = "Date button", group = "Component")
