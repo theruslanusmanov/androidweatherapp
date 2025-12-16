@@ -21,23 +21,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
-import com.theruslanusmanov.androidweatherapp.WeatherRoutes
+import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -45,8 +44,8 @@ import java.util.Locale
 val textColor = Color.White
 
 @Composable
-fun WeatherView(forecastViewModel: ForecastViewModel, navController: NavController) {
-    val forecast by forecastViewModel.forecastState.observeAsState()
+fun WeatherView(weatherViewModel: WeatherViewModel = hiltViewModel(), navController: NavController) {
+    val forecast by weatherViewModel.forecastState.collectAsStateWithLifecycle()
     forecast?.let { Weather(it, navController) }
 }
 
@@ -431,39 +430,46 @@ fun SearchButton(onClick: () -> Unit) {
     }
 }
 
-@Preview(name = "Weather screen", group = "Screen")
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    name = "Weather screen",
+    group = "Screen"
+)
 @Composable
 fun WeatherViewPreview() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(20.dp)
-    ) {
-//        Header()
-        Date()
-        LocationName(name = "Kazan")
-        Temperature(value = -10.0)
-        WeatherDescription(weathercode = 0)
-        Spacer(modifier = Modifier.height(50.dp))
-        Spacer(modifier = Modifier.height(50.dp))
-        Text(
-            text = "Daily",
-            color = textColor,
-            textAlign = TextAlign.Start,
-            style = weatherTypography.headlineLarge,
-            modifier = Modifier.fillMaxWidth()
-        )
+    AndroidWeatherAppTheme {
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.fillMaxWidth()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(20.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+//        Header()
+            Date()
+            LocationName(name = "Kazan")
+            Temperature(value = -10.0)
+            WeatherDescription(weathercode = 0)
+            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(50.dp))
+            Text(
+                text = "Daily",
+                color = textColor,
+                textAlign = TextAlign.Start,
+                style = weatherTypography.headlineLarge,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                DateButton()
-                DateForecast()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DateButton()
+                    DateForecast()
+                }
             }
-        }
 //        SearchButton {}
+        }
     }
 }
 

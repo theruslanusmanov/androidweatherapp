@@ -22,7 +22,6 @@ object LocationScheme {
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val locationRepository: LocationRepository,
 ) : ViewModel(), LifecycleObserver {
     private val _currentLocation = MutableStateFlow<Preferences?>(null)
 
@@ -34,14 +33,14 @@ class LocationViewModel @Inject constructor(
     }
 
     private fun getLocation() = viewModelScope.launch {
-        locationRepository.dataStore.edit { prefs ->
-            prefs[LocationScheme.FIELD_CITY] = "Berlin"
-            prefs[LocationScheme.FIELD_LATITUDE] = 52.520008
-            prefs[LocationScheme.FIELD_LONGITUDE] = 13.404954
-        }
-
-        locationRepository.dataStore.data.collect {
-            _currentLocation.emit(it)
-        }
+//        locationRepository.dataStore.edit { prefs ->
+//            prefs[LocationScheme.FIELD_CITY] = "Berlin"
+//            prefs[LocationScheme.FIELD_LATITUDE] = 52.520008
+//            prefs[LocationScheme.FIELD_LONGITUDE] = 13.404954
+//        }
+//
+//        locationRepository.dataStore.data.collect {
+//            _currentLocation.emit(it)
+//        }
     }
 }

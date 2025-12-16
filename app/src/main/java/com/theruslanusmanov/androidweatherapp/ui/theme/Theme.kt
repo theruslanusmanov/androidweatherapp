@@ -13,6 +13,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
+    background = Color.Black
     // ..
 )
 

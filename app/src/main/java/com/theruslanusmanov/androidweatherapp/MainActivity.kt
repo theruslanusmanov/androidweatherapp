@@ -23,7 +23,7 @@ import com.theruslanusmanov.androidweatherapp.search.SearchView
 import com.theruslanusmanov.androidweatherapp.search.SearchViewModel
 import com.theruslanusmanov.androidweatherapp.settings.SettingsView
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
-import com.theruslanusmanov.androidweatherapp.weather.ForecastViewModel
+import com.theruslanusmanov.androidweatherapp.weather.WeatherViewModel
 import com.theruslanusmanov.androidweatherapp.weather.WeatherView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,25 +34,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Forecast ViewModel
-        val forecastViewModel: ForecastViewModel by viewModels()
+        val weatherViewModel: WeatherViewModel by viewModels()
 
         // Search ViewModel
         val searchViewModel: SearchViewModel by viewModels()
-
-        // Location ViewModel
-        val locationViewModel: LocationViewModel by viewModels()
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                locationViewModel.currentLocation.collect {
-                    Log.d(
-                        "LOCATION_COLLECT",
-                        it.toString()
-                    )
-                }
-
-            }
-        }
 
         enableEdgeToEdge()
         setContent {
@@ -69,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // * Main
                         composable(route = WeatherRoutes.Main.name) {
-                            WeatherView(forecastViewModel, navController)
+                            WeatherView(weatherViewModel, navController)
                         }
                         // * Search
                         composable(route = WeatherRoutes.Search.name) {
@@ -92,6 +77,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     AndroidWeatherAppTheme {
-        WeatherView({} as ForecastViewModel, {} as NavController)
+        WeatherView({} as WeatherViewModel, {} as NavController)
     }
 }
