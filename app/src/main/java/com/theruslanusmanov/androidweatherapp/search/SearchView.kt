@@ -50,7 +50,15 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     val searchResults by searchViewModel.searchState.collectAsStateWithLifecycle()
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
 
-    Column(modifier = Modifier.padding(20.dp)) {
+    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+        Icon(
+            modifier = Modifier.clickable {
+                navController.navigate(WeatherRoutes.Main.name)
+            },
+            painter = painterResource(id = R.drawable.ic_back),
+            contentDescription = "Search icon",
+            tint = Color.White,
+        )
         // input
         Search(searchText = searchQuery, focused = true, onSearch = {
             searchViewModel.search(it)
