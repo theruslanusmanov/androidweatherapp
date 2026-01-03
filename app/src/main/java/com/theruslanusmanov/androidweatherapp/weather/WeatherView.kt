@@ -137,7 +137,7 @@ fun LocationName(name: String) {
 @Composable
 fun Temperature(value: Double = 0.0) {
     Text(
-        text = "$value°",
+        text = "${value.toInt()}°",
         color = Color.White/*Color(165, 207, 234, 255)*/,
         textAlign = TextAlign.Center,
         style = weatherTypography.headlineLarge,
