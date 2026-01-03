@@ -1,5 +1,6 @@
 package com.theruslanusmanov.androidweatherapp.search
 
+import android.R.id.primary
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
@@ -16,7 +17,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,11 +27,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -40,17 +48,19 @@ import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     val context = LocalContext.current
     val searchResults by searchViewModel.searchState.collectAsStateWithLifecycle()
+    val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.padding(20.dp)) {
-        // Search input
-        SearchInput(navController = navController, searchViewModel)
+        // input
+        Search(searchText = searchQuery, focused = true, onSearch = {
+            searchViewModel.search(it)
+        })
 
-        // Search results
+        // results
         if (searchResults?.results?.isEmpty() == true) {
             Text(text = "LOADING...", color = Color.White)
         } else {
             searchResults?.let {
-                Log.d("SEARCH", it.toString())
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     for (index in 0 until searchResults!!.results.size) {
                         Row(
@@ -96,60 +106,48 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
 }
 
 @Composable
-fun SearchInput(navController: NavController, viewModel: SearchViewModel) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        // Search Button
-        Box(
-            modifier = Modifier
-                .width(48.dp)
-                .clickable {
-                    navController.navigate(WeatherRoutes.Main.name)
-                }
-        ) {
+fun Search(
+    searchText: String,
+    focused: Boolean = false,
+    onSearch: (String) -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        if (focused) focusRequester.requestFocus() // Request focus when the composable enters the composition
+    }
+
+    OutlinedTextField(
+        value = searchText,
+        onValueChange = onSearch,
+        placeholder = { Text(text = "Search") },
+        singleLine = true,
+        leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = "Search icon",
+                painterResource(id = R.drawable.ic_search),
+                contentDescription = "search",
                 tint = Color.White
             )
-        }
+        },
+        colors = TextFieldDefaults.colors(
+            disabledTextColor = Color.Black,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+        modifier = Modifier
+            .clip(RoundedCornerShape(percent = 100))
+            .fillMaxWidth()
+            .background(Color.DarkGray)
+            .focusRequester(focusRequester)
+            .testTag("SearchTextField")
+    )
+}
 
-        var searchQuery by remember { mutableStateOf("") }
-
-
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-                viewModel.getSearch(it)
-            },
-            placeholder = {
-                Text(text = "Search...")
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search),
-                    contentDescription = "Search icon",
-                    tint = Color.White
-                )
-            },
-            textStyle = TextStyle(
-                color = Color.White,
-                platformStyle = PlatformTextStyle(includeFontPadding = false)
-            ),
-//            colors = TextFieldDefaults.textFieldColors(
-//                textColor = Color.White,
-//                backgroundColor = Color.Gray,
-//                focusedIndicatorColor = Color.White,
-//                focusedLabelColor = Color.White,
-//                cursorColor = Color.White
-//            ),
-            shape = RoundedCornerShape(48.dp),
-            modifier = Modifier
-                .height(48.dp)
-                .weight(1f)
-        )
-    }
+@Preview(name = "Search", group = "Components", showBackground = true)
+@Composable
+fun SearchPreview() {
+    Search(searchText = "", focused = true, onSearch = {})
 }
