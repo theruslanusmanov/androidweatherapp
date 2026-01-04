@@ -2,7 +2,7 @@ package com.theruslanusmanov.androidweatherapp.di
 
 import com.theruslanusmanov.androidweatherapp.Config.FORECAST_HOST
 import com.theruslanusmanov.androidweatherapp.search.GeocodeApiService
-import com.theruslanusmanov.androidweatherapp.weather.ForecastApiService
+import com.theruslanusmanov.androidweatherapp.network.ForecastApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,8 +57,8 @@ object RestNetwork {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ForecastApiService {
-        return retrofit.create(ForecastApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): ForecastApi {
+        return retrofit.create(ForecastApi::class.java)
     }
 
     @Singleton

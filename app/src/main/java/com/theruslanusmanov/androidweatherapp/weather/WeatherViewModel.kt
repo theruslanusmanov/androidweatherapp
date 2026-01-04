@@ -23,7 +23,7 @@ const val CURRENT_LONGITUDE = 55.7887F
 class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     @param:ApplicationContext private val application: Context
-) : ViewModel(), LifecycleObserver {
+) : ViewModel() {
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
@@ -38,6 +38,7 @@ class WeatherViewModel @Inject constructor(
     private fun getForecast() = viewModelScope.launch {
         _loading.value = true
         val pref = application.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        Log.d("LATITUDE", pref.getFloat("latitude", CURRENT_LATITUDE).toString())
         when (val result = weatherRepository.getForecast(
             pref.getFloat("latitude", CURRENT_LATITUDE),
             pref.getFloat("longitude", CURRENT_LONGITUDE)
