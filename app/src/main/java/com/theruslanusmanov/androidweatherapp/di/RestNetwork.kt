@@ -1,7 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.di
 
 import com.theruslanusmanov.androidweatherapp.Config.FORECAST_HOST
-import com.theruslanusmanov.androidweatherapp.search.GeocodeApiService
+import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import com.theruslanusmanov.androidweatherapp.network.ForecastApi
 import dagger.Module
 import dagger.Provides
@@ -63,8 +63,8 @@ object RestNetwork {
 
     @Singleton
     @Provides
-    fun provideGeocodeApiService(retrofit: Retrofit): GeocodeApiService {
-        return retrofit.create(GeocodeApiService::class.java)
+    fun provideGeocodeApiService(retrofit: Retrofit): GeocodeApi {
+        return retrofit.create(GeocodeApi::class.java)
     }
 
 
