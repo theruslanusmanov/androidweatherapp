@@ -100,7 +100,8 @@ dependencies {
     implementation(libs.core.splashscreen)
 
     // Android DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation (libs.datastore)
+    implementation (libs.datastore.preferences)
 
     // Tests
     testImplementation(libs.junit)
