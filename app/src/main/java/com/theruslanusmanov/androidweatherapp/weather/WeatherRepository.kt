@@ -2,6 +2,7 @@ package com.theruslanusmanov.androidweatherapp.weather
 
 import com.theruslanusmanov.androidweatherapp.common.BaseApiResponse
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
+import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import com.theruslanusmanov.androidweatherapp.network.ForecastApi
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineDispatcher

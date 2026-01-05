@@ -1,6 +1,6 @@
 package com.theruslanusmanov.androidweatherapp.network
 
-import com.theruslanusmanov.androidweatherapp.weather.Forecast
+import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

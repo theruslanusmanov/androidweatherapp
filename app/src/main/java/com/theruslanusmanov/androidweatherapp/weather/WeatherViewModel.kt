@@ -2,12 +2,10 @@ package com.theruslanusmanov.androidweatherapp.weather
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
+import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
