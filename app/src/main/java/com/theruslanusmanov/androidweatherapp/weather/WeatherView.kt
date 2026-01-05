@@ -1,7 +1,6 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
 import android.annotation.SuppressLint
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -63,71 +62,67 @@ fun WeatherView(
 
 @Composable
 fun Weather(forecast: Forecast, locationName: String, navController: NavController) {
-    Column(
-        modifier = Modifier.padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    LazyColumn(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxWidth().padding(20.dp),
     ) {
-        // header
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search icon",
-                tint = textColor,
-                modifier = Modifier
-                    .size(48.dp)
-                    .clickable {
-                        navController.navigate(WeatherRoutes.Search.name)
-                    }
-            )
-        }
-
-        Spacer(Modifier.height(32.dp))
-
-        // main info
-        Column {
-            Date()
-            LocationName(name = locationName)
-            Temperature(value = forecast.current.temperature2m)
-            WeatherDescription(weathercode = forecast.current.weathercode)
-        }
-
-        Spacer(modifier = Modifier.height(100.dp))
-
-        // 10-day forecast
-        LazyColumn(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item {
-                Text(
-                    text = "Daily",
-                    color = textColor,
-                    textAlign = TextAlign.Start,
-                    style = weatherTypography.headlineLarge,
-                    modifier = Modifier.fillMaxWidth()
+        item {
+            // header
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "Search icon",
+                    tint = textColor,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable {
+                            navController.navigate(WeatherRoutes.Search.name)
+                        }
                 )
             }
-            repeat(10) { index ->
-                item {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
-                        val dateTime = instant.toLocalDateTime(TimeZone.UTC)
-                        DateButton(
-                            dayWeek = dateTime.dayOfWeek.name.take(3),
-                            day = dateTime.dayOfMonth.toString(),
-                            month = dateTime.month.name.take(3)
-                        )
-                        Spacer(Modifier.width(20.dp))
-                        DateForecast(
-                            weatherCode = forecast.daily.weathercode[index],
-                            maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
-                            minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
-                        )
-                    }
+
+            Spacer(Modifier.height(32.dp))
+        }
+        // main info
+        item {
+            Column {
+                Date()
+                LocationName(name = locationName)
+                Temperature(value = forecast.current.temperature2m)
+                WeatherDescription(weathercode = forecast.current.weathercode)
+            }
+            Spacer(modifier = Modifier.height(100.dp))
+        }
+        // 10-day forecast
+        item {
+            Text(
+                text = "Daily",
+                color = textColor,
+                textAlign = TextAlign.Start,
+                style = weatherTypography.headlineLarge,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        repeat(10) { index ->
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
+                    val dateTime = instant.toLocalDateTime(TimeZone.UTC)
+                    DateButton(
+                        dayWeek = dateTime.dayOfWeek.name.take(3),
+                        day = dateTime.dayOfMonth.toString(),
+                        month = dateTime.month.name.take(3)
+                    )
+                    Spacer(Modifier.width(20.dp))
+                    DateForecast(
+                        weatherCode = forecast.daily.weathercode[index],
+                        maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
+                        minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
+                    )
                 }
             }
         }
@@ -345,7 +340,7 @@ fun DateButton(dayWeek: String, day: String, month: String) {
 }
 
 @Composable
-fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: String,) {
+fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically,
