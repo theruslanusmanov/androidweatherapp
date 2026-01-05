@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.search
+package com.theruslanusmanov.androidweatherapp.domain.models
 
 import com.google.gson.annotations.SerializedName
 

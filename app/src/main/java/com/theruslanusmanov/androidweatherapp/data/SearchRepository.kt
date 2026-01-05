@@ -1,13 +1,13 @@
-package com.theruslanusmanov.androidweatherapp.search
+package com.theruslanusmanov.androidweatherapp.data
 
 import com.theruslanusmanov.androidweatherapp.common.BaseApiResponse
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
 import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
+import com.theruslanusmanov.androidweatherapp.domain.models.Geocode
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 
 @ActivityRetainedScoped
 class SearchRepository @Inject constructor(
@@ -17,7 +17,7 @@ class SearchRepository @Inject constructor(
 
     suspend fun getSearch(city: String): NetworkResult<Geocode> {
         return withContext(defaultDispatcher) {
-            safeApiCall { 
+            safeApiCall {
                 geocodeApi.getGeocode(name = city)
             }
         }

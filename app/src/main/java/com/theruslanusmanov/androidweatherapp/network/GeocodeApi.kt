@@ -1,6 +1,6 @@
 package com.theruslanusmanov.androidweatherapp.network
 
-import com.theruslanusmanov.androidweatherapp.search.Geocode
+import com.theruslanusmanov.androidweatherapp.domain.models.Geocode
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
