@@ -62,4 +62,10 @@ class SearchViewModel @Inject constructor(
             locationRepository.saveLocation(location)
         }
     }
+
+    fun saveLocationName(name: String) {
+        viewModelScope.launch {
+            locationRepository.saveLocationName(name)
+        }
+    }
 }

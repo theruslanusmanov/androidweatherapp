@@ -78,6 +78,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                                             searchResults!!.results[index].longitude.toString()
                                         )
                                     )
+                                    searchViewModel.saveLocationName(searchResults!!.results[index].name!!)
                                     // go back
                                     navController.navigate(WeatherRoutes.Main.name)
                                 }

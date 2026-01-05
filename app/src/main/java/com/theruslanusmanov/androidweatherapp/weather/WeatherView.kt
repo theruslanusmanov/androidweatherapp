@@ -52,11 +52,12 @@ fun WeatherView(
     navController: NavController
 ) {
     val forecast by weatherViewModel.forecastState.collectAsStateWithLifecycle()
-    forecast?.let { Weather(it, navController) }
+    val locationName by weatherViewModel.locationName.collectAsStateWithLifecycle()
+    forecast?.let { Weather(it, locationName, navController) }
 }
 
 @Composable
-fun Weather(forecast: Forecast, navController: NavController) {
+fun Weather(forecast: Forecast, locationName: String, navController: NavController) {
     Column(
         modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,7 +84,7 @@ fun Weather(forecast: Forecast, navController: NavController) {
         // main info
         Column {
             Date()
-            LocationName(name = "Kazan")
+            LocationName(name = locationName)
             Temperature(value = forecast.current.temperature2m)
             WeatherDescription(weathercode = forecast.current.weathercode)
         }

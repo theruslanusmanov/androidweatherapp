@@ -21,6 +21,7 @@ val Context.geoPreferencesDataStore: DataStore<Preferences> by preferencesDataSt
 
 val GEO_LATITUDE_KEY: Preferences.Key<String> = stringPreferencesKey("latitude")
 val GEO_LONGITUDE_KEY: Preferences.Key<String> = stringPreferencesKey("longitude")
+val GEO_LOCATION_NAME_KEY: Preferences.Key<String> = stringPreferencesKey("location_name")
 
 @ActivityRetainedScoped
 class LocationRepository @Inject constructor(
@@ -37,6 +38,18 @@ class LocationRepository @Inject constructor(
     fun getLocation(): Flow<Pair<String?, String?>?> = flow {
         context.geoPreferencesDataStore.data
             .map { Pair(it[GEO_LATITUDE_KEY], it[GEO_LONGITUDE_KEY]) }
+            .collect { emit(it) }
+    }
+
+    suspend fun saveLocationName(name: String) {
+        context.geoPreferencesDataStore.edit { settings ->
+            settings[GEO_LOCATION_NAME_KEY] = name
+        }
+    }
+
+    fun getLocationName(): Flow<String?> = flow {
+        context.geoPreferencesDataStore.data
+            .map { it[GEO_LOCATION_NAME_KEY] }
             .collect { emit(it) }
     }
 }

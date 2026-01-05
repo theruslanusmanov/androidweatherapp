@@ -9,13 +9,17 @@ import com.theruslanusmanov.androidweatherapp.data.WeatherRepository
 import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val CURRENT_LATITUDE = 55.7887F
-const val CURRENT_LONGITUDE = 55.7887F
+const val DEFAULT_LATITUDE = 55.7887F
+const val DEFAULT_LONGITUDE = 55.7887F
+const val DEFAULT_LOCATION_NAME = "Kazan"
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
@@ -29,8 +33,18 @@ class WeatherViewModel @Inject constructor(
     private val _forecastState = MutableStateFlow<Forecast?>(null)
     val forecastState: StateFlow<Forecast?> = _forecastState.asStateFlow()
 
+    val locationName: StateFlow<String> = locationRepository.getLocationName()
+        .map {
+            if (it.isNullOrEmpty()) DEFAULT_LOCATION_NAME else it
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = DEFAULT_LOCATION_NAME,
+        )
+
     init {
-        getForecast(Pair(CURRENT_LATITUDE.toString(), CURRENT_LONGITUDE.toString()))
+        getForecast(Pair(DEFAULT_LATITUDE.toString(), DEFAULT_LONGITUDE.toString()))
         viewModelScope.launch {
             locationRepository.getLocation().collect { location ->
                 getForecast(location as Pair<String, String>)
