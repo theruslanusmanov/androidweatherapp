@@ -33,10 +33,10 @@ data class CurrentUnits(
 )
 
 data class Daily(
-    @SerializedName("time") var time: ArrayList<Int> = arrayListOf(),
-    @SerializedName("weathercode") var weathercode: ArrayList<Int> = arrayListOf(),
-    @SerializedName("temperature_2m_max") var temperature2mMax: ArrayList<Double> = arrayListOf(),
-    @SerializedName("temperature_2m_min") var temperature2mMin: ArrayList<Double> = arrayListOf()
+    @SerializedName("time") var time: List<Int> = listOf(),
+    @SerializedName("weathercode") var weathercode: List<Int> = listOf(),
+    @SerializedName("temperature_2m_max") var temperature2mMax: List<Double> = listOf(),
+    @SerializedName("temperature_2m_min") var temperature2mMin: List<Double> = listOf()
 )
 
 data class DailyUnits(

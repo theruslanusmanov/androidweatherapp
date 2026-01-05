@@ -36,7 +36,6 @@ import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 
 @Composable
 fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
-    val context = LocalContext.current
     val searchResults by searchViewModel.searchState.collectAsStateWithLifecycle()
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
 

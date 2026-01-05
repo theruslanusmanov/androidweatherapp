@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -88,30 +89,36 @@ fun Weather(forecast: Forecast, locationName: String, navController: NavControll
             Temperature(value = forecast.current.temperature2m)
             WeatherDescription(weathercode = forecast.current.weathercode)
         }
-        Spacer(modifier = Modifier.height(50.dp))
-        Spacer(modifier = Modifier.height(50.dp))
-//        Text(
-//            text = "Daily",
-//            color = textColor,
-//            textAlign = TextAlign.Start,
-//            style = weatherTypography.headlineLarge,
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//        Column(
-//            horizontalAlignment = Alignment.Start,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                DateButton()
-//                DateForecast()
-//            }
-//        }
-//        SearchButton {
-//            navController.navigate(WeatherRoutes.Search.name)
-//        }
-//        TenDayForecast(dailyForecast = forecast.daily)
+
+        Spacer(modifier = Modifier.height(100.dp))
+
+        // 10-day forecast
+        LazyColumn(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            item {
+                Text(
+                    text = "Daily",
+                    color = textColor,
+                    textAlign = TextAlign.Start,
+                    style = weatherTypography.headlineLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            repeat(10) { index ->
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        DateButton()
+                        DateForecast(
+                            forecast.daily.temperature2mMax[index].toString(),
+                            forecast.daily.temperature2mMin[index].toString()
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -160,7 +167,9 @@ fun WeatherDescription(weathercode: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth().offset(y = -20.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .offset(y = -20.dp)
     ) {
         Icon(
             painter = painterResource(id = getWeatherIcon(weathercode)),
@@ -324,89 +333,41 @@ fun DateButton() {
 }
 
 @Composable
-fun DateForecast() {
+fun DateForecast(maxTemperature: String, minTemperature: String) {
     Row(
         horizontalArrangement = Arrangement.Absolute.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column {
-            Text(
-                color = textColor,
-                text = "-7",
-                textAlign = TextAlign.Center,
-                style = weatherTypography.bodyMedium,
+        Row {
+            Icon(
+                painter = painterResource(id = getWeatherIcon(2)),
+                contentDescription = "Weather icon",
+                tint = textColor,
+                modifier = Modifier.size(30.dp)
             )
+            Spacer(modifier = Modifier.width(5.dp))
             Text(
                 color = textColor,
-                text = "-11",
+                text = maxTemperature,
                 textAlign = TextAlign.Center,
                 style = weatherTypography.bodyMedium,
             )
         }
-        Column {
-            Row {
-                Icon(
-                    painter = painterResource(id = getWeatherIcon(1)),
-                    contentDescription = "Weather icon",
-                    tint = textColor,
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    color = textColor,
-                    text = "-8",
-                    textAlign = TextAlign.Center,
-                    style = weatherTypography.bodyMedium,
-                )
-            }
-            Row {
-                Icon(
-                    painter = painterResource(id = getWeatherIcon(2)),
-                    contentDescription = "Weather icon",
-                    tint = textColor,
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    color = textColor,
-                    text = "-8",
-                    textAlign = TextAlign.Center,
-                    style = weatherTypography.bodyMedium,
-                )
-            }
-        }
-        Column {
-            Row {
-                Icon(
-                    painter = painterResource(id = getWeatherIcon(1)),
-                    contentDescription = "Weather icon",
-                    tint = textColor,
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    color = textColor,
-                    text = "-8",
-                    textAlign = TextAlign.Center,
-                    style = weatherTypography.bodyMedium,
-                )
-            }
-            Row {
-                Icon(
-                    painter = painterResource(id = getWeatherIcon(1)),
-                    contentDescription = "Weather icon",
-                    tint = textColor,
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    color = textColor,
-                    text = "-8",
-                    textAlign = TextAlign.Center,
-                    style = weatherTypography.bodyMedium,
-                )
-            }
+        Row {
+            Icon(
+                painter = painterResource(id = getWeatherIcon(1)),
+                contentDescription = "Weather icon",
+                tint = textColor,
+                modifier = Modifier.size(30.dp)
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                color = textColor,
+                text = minTemperature,
+                textAlign = TextAlign.Center,
+                style = weatherTypography.bodyMedium,
+            )
         }
     }
 }
@@ -474,7 +435,7 @@ fun WeatherViewPreview() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     DateButton()
-                    DateForecast()
+                    DateForecast("-10", "20")
                 }
             }
 //        SearchButton {}
@@ -482,45 +443,3 @@ fun WeatherViewPreview() {
     }
 }
 
-@Preview(name = "Date", group = "Component")
-@Composable
-fun DatePreview() {
-    Date()
-}
-
-@Preview(name = "Location", group = "Component")
-@Composable
-fun LocationPreview() {
-    LocationName(name = "Kazan")
-}
-
-@Preview(name = "Temperature", group = "Component")
-@Composable
-fun TemperaturePreview() {
-    Temperature(value = -10.0)
-}
-
-@Preview(name = "Weather description", group = "Component")
-@Composable
-fun WeatherDescriptionPreview() {
-    WeatherDescription(weathercode = 95)
-}
-
-@Preview(name = "Date button", group = "Component")
-@Composable
-fun DateButtonPreview() {
-    DateButton()
-}
-
-@Preview(name = "Date forecast", group = "Component")
-@Composable
-fun DateForecastPreview() {
-    DateForecast()
-}
-
-
-@Preview(name = "Search button", group = "Component")
-@Composable
-fun SearchButtonPreview() {
-    SearchButton { }
-}
