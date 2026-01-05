@@ -87,6 +87,9 @@ dependencies {
     // Kotlin Serialization
     implementation(libs.kotlin.serialization.json)
 
+    // Kotlinx datetime
+    implementation(libs.kotlinx.datetime)
+
     // Location
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)

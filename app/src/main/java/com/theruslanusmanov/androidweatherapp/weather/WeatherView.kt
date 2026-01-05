@@ -1,6 +1,7 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
 import android.annotation.SuppressLint
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +43,9 @@ import com.theruslanusmanov.androidweatherapp.domain.models.Daily
 import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -110,10 +114,18 @@ fun Weather(forecast: Forecast, locationName: String, navController: NavControll
             repeat(10) { index ->
                 item {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        DateButton()
+                        val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
+                        val dateTime = instant.toLocalDateTime(TimeZone.UTC)
+                        DateButton(
+                            dayWeek = dateTime.dayOfWeek.name.take(3),
+                            day = dateTime.dayOfMonth.toString(),
+                            month = dateTime.month.name.take(3)
+                        )
+                        Spacer(Modifier.width(20.dp))
                         DateForecast(
-                            forecast.daily.temperature2mMax[index].toString(),
-                            forecast.daily.temperature2mMin[index].toString()
+                            weatherCode = forecast.daily.weathercode[index],
+                            maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
+                            minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
                         )
                     }
                 }
@@ -292,7 +304,7 @@ fun getDayOfWeek(timestamp: Int): String {
 }
 
 @Composable
-fun DateButton() {
+fun DateButton(dayWeek: String, day: String, month: String) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -307,7 +319,7 @@ fun DateButton() {
             )
     ) {
         Text(
-            text = "Sat",
+            text = dayWeek,
             color = Color(253, 131, 131, 191),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
@@ -316,14 +328,14 @@ fun DateButton() {
         )
         Text(
             color = textColor,
-            text = "13",
+            text = day,
             fontSize = 48.sp,
             textAlign = TextAlign.Center,
             style = weatherTypography.bodyMedium,
         )
         Text(
             color = Color(255, 255, 255, 191),
-            text = "Feb",
+            text = month,
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
             style = weatherTypography.bodyMedium,
@@ -333,42 +345,42 @@ fun DateButton() {
 }
 
 @Composable
-fun DateForecast(maxTemperature: String, minTemperature: String) {
+fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: String,) {
     Row(
-        horizontalArrangement = Arrangement.Absolute.SpaceAround,
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row {
-            Icon(
-                painter = painterResource(id = getWeatherIcon(2)),
-                contentDescription = "Weather icon",
-                tint = textColor,
-                modifier = Modifier.size(30.dp)
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(
-                color = textColor,
-                text = maxTemperature,
-                textAlign = TextAlign.Center,
-                style = weatherTypography.bodyMedium,
-            )
-        }
-        Row {
-            Icon(
-                painter = painterResource(id = getWeatherIcon(1)),
-                contentDescription = "Weather icon",
-                tint = textColor,
-                modifier = Modifier.size(30.dp)
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(
-                color = textColor,
-                text = minTemperature,
-                textAlign = TextAlign.Center,
-                style = weatherTypography.bodyMedium,
-            )
-        }
+        Icon(
+            painter = painterResource(id = getWeatherIcon(weatherCode)),
+            contentDescription = "Weather icon",
+            tint = textColor,
+            modifier = Modifier.size(30.dp)
+        )
+        Text(
+            color = textColor,
+            text = "MIN",
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodySmall,
+        )
+        Text(
+            color = textColor,
+            text = maxTemperature,
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+        )
+        Text(
+            color = textColor,
+            text = "MAX",
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodySmall,
+        )
+        Text(
+            color = textColor,
+            text = minTemperature,
+            textAlign = TextAlign.Center,
+            style = weatherTypography.bodyMedium,
+        )
     }
 }
 
@@ -434,8 +446,8 @@ fun WeatherViewPreview() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    DateButton()
-                    DateForecast("-10", "20")
+                    //DateButton("24")
+                    //DateForecast("-10", "20")
                 }
             }
 //        SearchButton {}
