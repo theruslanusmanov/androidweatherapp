@@ -1,7 +1,5 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,15 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,8 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
-import com.theruslanusmanov.androidweatherapp.domain.models.Daily
-import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import kotlinx.datetime.Instant
@@ -57,15 +50,14 @@ fun WeatherView(
 ) {
     val forecast by weatherViewModel.forecastState.collectAsStateWithLifecycle()
     val locationName by weatherViewModel.locationName.collectAsStateWithLifecycle()
-    forecast?.let { Weather(it, locationName, navController) }
-}
+    val loading by weatherViewModel.loading.collectAsStateWithLifecycle()
 
-@Composable
-fun Weather(forecast: Forecast, locationName: String, navController: NavController) {
     LazyColumn(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth().padding(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
     ) {
         item {
             // header
@@ -92,8 +84,14 @@ fun Weather(forecast: Forecast, locationName: String, navController: NavControll
             Column {
                 Date()
                 LocationName(name = locationName)
-                Temperature(value = forecast.current.temperature2m)
-                WeatherDescription(weathercode = forecast.current.weathercode)
+                if (!loading) {
+                    forecast?.let { forecast ->
+                        Temperature(value = forecast.current.temperature2m)
+                        WeatherDescription(weathercode = forecast.current.weathercode)
+                    }
+                } else {
+                    Text("LOADING...")
+                }
             }
             Spacer(modifier = Modifier.height(100.dp))
         }
@@ -107,22 +105,26 @@ fun Weather(forecast: Forecast, locationName: String, navController: NavControll
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        repeat(10) { index ->
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
-                    val dateTime = instant.toLocalDateTime(TimeZone.UTC)
-                    DateButton(
-                        dayWeek = dateTime.dayOfWeek.name.take(3),
-                        day = dateTime.dayOfMonth.toString(),
-                        month = dateTime.month.name.take(3)
-                    )
-                    Spacer(Modifier.width(20.dp))
-                    DateForecast(
-                        weatherCode = forecast.daily.weathercode[index],
-                        maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
-                        minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
-                    )
+        if (!loading) {
+            forecast?.let { forecast ->
+                repeat(10) { index ->
+                    item {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
+                            val dateTime = instant.toLocalDateTime(TimeZone.UTC)
+                            DateButton(
+                                dayWeek = dateTime.dayOfWeek.name.take(3),
+                                day = dateTime.dayOfMonth.toString(),
+                                month = dateTime.month.name.take(3)
+                            )
+                            Spacer(Modifier.width(20.dp))
+                            DateForecast(
+                                weatherCode = forecast.daily.weathercode[index],
+                                maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
+                                minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -192,69 +194,6 @@ fun WeatherDescription(weathercode: Int) {
             style = weatherTypography.headlineMedium,
             color = Color.White
         )
-    }
-}
-
-@SuppressLint("DefaultLocale")
-@Composable
-fun TenDayForecastRow(
-    time: Int,
-    weatherCode: Int,
-    temperature: Double
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = getDayOfWeek(time),
-            color = textColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(2f)
-        )
-        Icon(
-            painter = painterResource(id = getWeatherIcon(weatherCode)),
-            contentDescription = "Weather icon",
-            tint = textColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
-        Text(
-            text = "${String.format("%.1f", temperature)}°".uppercase(),
-            color = textColor,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-        )
-    }
-}
-
-@Composable
-fun TenDayForecast(dailyForecast: Daily) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.DarkGray, shape = RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
-            .padding(15.dp)
-    ) {
-        Text(
-            text = "10-Day Forecast".uppercase(), fontWeight = FontWeight.Bold, color = textColor
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            for (index in 0..9) {
-                TenDayForecastRow(
-                    dailyForecast.time[index],
-                    dailyForecast.weathercode[index],
-                    (dailyForecast.temperature2mMax[index] + dailyForecast.temperature2mMin[index]) / 2
-                )
-            }
-        }
     }
 }
 
@@ -376,34 +315,6 @@ fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: Strin
             textAlign = TextAlign.Center,
             style = weatherTypography.bodyMedium,
         )
-    }
-}
-
-@Composable
-fun SearchButton(onClick: () -> Unit) {
-    Button(
-        colors = ButtonColors(
-            containerColor = Color.DarkGray,
-            contentColor = Color.White,
-            disabledContainerColor = Color.Black,
-            disabledContentColor = Color.White
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp), onClick = { onClick() }
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search icon",
-                tint = textColor
-            )
-            Text(text = "Search", style = weatherTypography.bodyMedium)
-        }
     }
 }
 
