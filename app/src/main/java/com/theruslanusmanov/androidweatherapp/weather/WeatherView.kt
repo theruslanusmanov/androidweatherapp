@@ -80,7 +80,7 @@ fun Weather(forecast: Forecast, locationName: String, navController: NavControll
                     modifier = Modifier
                         .size(48.dp)
                         .clickable {
-                            navController.navigate(WeatherRoutes.Search.name)
+                            navController.navigate(WeatherRoutes.Search)
                         }
                 )
             }

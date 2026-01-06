@@ -44,14 +44,14 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = WeatherRoutes.Main.name
+                        startDestination = WeatherRoutes.Main
                     ) {
                         // * Main
-                        composable(route = WeatherRoutes.Main.name) {
+                        composable<WeatherRoutes.Main> {
                             WeatherView(weatherViewModel, navController)
                         }
                         // * Search
-                        composable(route = WeatherRoutes.Search.name) {
+                        composable<WeatherRoutes.Search> {
                             SearchView(searchViewModel, navController)
                         }
                     }

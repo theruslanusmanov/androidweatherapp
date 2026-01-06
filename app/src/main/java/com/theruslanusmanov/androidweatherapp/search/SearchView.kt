@@ -42,7 +42,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Icon(
             modifier = Modifier.clickable {
-                navController.navigate(WeatherRoutes.Main.name)
+                navController.navigate(WeatherRoutes.Main)
             },
             painter = painterResource(id = R.drawable.ic_back),
             contentDescription = "Search icon",
@@ -79,7 +79,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                                     )
                                     searchViewModel.saveLocationName(searchResults!!.results[index].name!!)
                                     // go back
-                                    navController.navigate(WeatherRoutes.Main.name)
+                                    navController.navigate(WeatherRoutes.Main)
                                 }
                         ) {
                             Text(

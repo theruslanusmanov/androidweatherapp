@@ -1,6 +1,13 @@
 package com.theruslanusmanov.androidweatherapp
 
-enum class WeatherRoutes {
-    Main,
-    Search,
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class WeatherRoutes {
+
+    @Serializable
+    object Main
+
+    @Serializable
+    object Search
 }
