@@ -1,18 +1,20 @@
 package com.theruslanusmanov.androidweatherapp.di
 
 import com.theruslanusmanov.androidweatherapp.Config.FORECAST_HOST
-import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import com.theruslanusmanov.androidweatherapp.network.ForecastApi
+import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -51,7 +53,11 @@ object RestNetwork {
         okHttpClient: OkHttpClient
     ): Retrofit {
         val retro = Retrofit.Builder().baseUrl(baseURL).client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create()).build();
+            .addConverterFactory(
+                Json.asConverterFactory(
+                    "application/json; charset=utf-8".toMediaType()
+                )
+            ).build();
         return retro;
     }
 
