@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
@@ -45,7 +46,7 @@ val textColor = Color.White
 
 @Composable
 fun WeatherView(
-    weatherViewModel: WeatherViewModel = hiltViewModel(),
+    weatherViewModel: WeatherViewModel = hiltViewModel<DefaultWeatherViewModel>(),
     navController: NavController
 ) {
     val forecast by weatherViewModel.forecastState.collectAsStateWithLifecycle()
@@ -86,8 +87,10 @@ fun WeatherView(
                 LocationName(name = locationName)
                 if (!loading) {
                     forecast?.let { forecast ->
-                        Temperature(value = forecast.current.temperature2m)
-                        WeatherDescription(weathercode = forecast.current.weathercode)
+                        Temperature(value = forecast.current?.temperature2m)
+                        forecast.current?.weathercode?.let {
+                            WeatherDescription(weathercode = it)
+                        }
                     }
                 } else {
                     Text("LOADING...")
@@ -110,18 +113,23 @@ fun WeatherView(
                 repeat(10) { index ->
                     item {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            val instant = Instant.fromEpochSeconds(forecast.daily.time[index].toLong())
-                            val dateTime = instant.toLocalDateTime(TimeZone.UTC)
-                            DateButton(
-                                dayWeek = dateTime.dayOfWeek.name.take(3),
-                                day = dateTime.dayOfMonth.toString(),
-                                month = dateTime.month.name.take(3)
-                            )
+                            forecast.daily?.time[index]?.let {
+                                val instant =
+                                    Instant.fromEpochSeconds(it.toLong())
+                                val dateTime = instant.toLocalDateTime(TimeZone.UTC)
+                                DateButton(
+                                    dayWeek = dateTime.dayOfWeek.name.take(3),
+                                    day = dateTime.dayOfMonth.toString(),
+                                    month = dateTime.month.name.take(3)
+                                )
+                            }
                             Spacer(Modifier.width(20.dp))
                             DateForecast(
-                                weatherCode = forecast.daily.weathercode[index],
-                                maxTemperature = forecast.daily.temperature2mMax[index].toInt().toString(),
-                                minTemperature = forecast.daily.temperature2mMin[index].toInt().toString()
+                                weatherCode = forecast.daily?.weathercode[index] ?: 0,
+                                maxTemperature = forecast.daily?.temperature2mMax[index]?.toInt()
+                                    .toString(),
+                                minTemperature = forecast.daily?.temperature2mMin[index]?.toInt()
+                                    .toString()
                             )
                         }
                     }
@@ -160,9 +168,9 @@ fun LocationName(name: String) {
 }
 
 @Composable
-fun Temperature(value: Double = 0.0) {
+fun Temperature(value: Double? = 0.0) {
     Text(
-        text = "${value.toInt()}°",
+        text = "${value?.toInt()}°",
         color = Color.White,
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
@@ -327,37 +335,10 @@ fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: Strin
 @Composable
 fun WeatherViewPreview() {
     AndroidWeatherAppTheme {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(20.dp)
-        ) {
-//        Header()
-            Date()
-            LocationName(name = "Kazan")
-            Temperature(value = -10.0)
-            WeatherDescription(weathercode = 0)
-            Spacer(modifier = Modifier.height(50.dp))
-            Spacer(modifier = Modifier.height(50.dp))
-            Text(
-                text = "Daily",
-                color = textColor,
-                textAlign = TextAlign.Start,
-                style = weatherTypography.headlineLarge,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    //DateButton("24")
-                    //DateForecast("-10", "20")
-                }
-            }
-//        SearchButton {}
-        }
+        WeatherView(
+            weatherViewModel = hiltViewModel<FakeWeatherViewModel>(),
+            navController = rememberNavController()
+        )
     }
 }
 

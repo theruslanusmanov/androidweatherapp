@@ -19,7 +19,7 @@ import com.theruslanusmanov.androidweatherapp.search.SearchView
 import com.theruslanusmanov.androidweatherapp.search.SearchViewModel
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.weather.WeatherView
-import com.theruslanusmanov.androidweatherapp.weather.WeatherViewModel
+import com.theruslanusmanov.androidweatherapp.weather.DefaultWeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Forecast ViewModel
-        val weatherViewModel: WeatherViewModel by viewModels()
+        val weatherViewModel: DefaultWeatherViewModel by viewModels()
 
         // Search ViewModel
         val searchViewModel: SearchViewModel by viewModels()
@@ -67,6 +67,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     AndroidWeatherAppTheme {
-        WeatherView({} as WeatherViewModel, {} as NavController)
+        WeatherView({} as DefaultWeatherViewModel, {} as NavController)
     }
 }

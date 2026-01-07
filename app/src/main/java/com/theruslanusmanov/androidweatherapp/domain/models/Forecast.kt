@@ -1,47 +1,51 @@
 package com.theruslanusmanov.androidweatherapp.domain.models
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-
-// API https://api.open-meteo.com/v1/forecast?latitude=55.7887&longitude=49.1221&current=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&timeformat=unixtime&timezone=Europe%2FMoscow&forecast_days=10&format=json
+@Serializable
 data class Forecast(
-    @SerializedName("latitude") var latitude: Double,
-    @SerializedName("longitude") var longitude: Double,
-    @SerializedName("generationtime_ms") var generationtimeMs: Double,
-    @SerializedName("utc_offset_seconds") var utcOffsetSeconds: Int,
-    @SerializedName("timezone") var timezone: String,
-    @SerializedName("timezone_abbreviation") var timezoneAbbreviation: String,
-    @SerializedName("elevation") var elevation: Int,
-    @SerializedName("current_units") var currentUnits: CurrentUnits,
-    @SerializedName("current") var current: Current,
-    @SerializedName("daily_units") var dailyUnits: DailyUnits,
-    @SerializedName("daily") var daily: Daily
+    @SerialName("latitude") val latitude: Double? = null,
+    @SerialName("longitude") val longitude: Double? = null,
+    @SerialName("generationtime_ms") val generationtimeMs: Double? = null,
+    @SerialName("utc_offset_seconds") val utcOffsetSeconds: Int? = null,
+    @SerialName("timezone") val timezone: String? = null,
+    @SerialName("timezone_abbreviation") val timezoneAbbreviation: String? = null,
+    @SerialName("elevation") val elevation: Int? = null,
+    @SerialName("current_units") val currentUnits: CurrentUnits? = null,
+    @SerialName("current") val current: Current? = null,
+    @SerialName("daily_units") val dailyUnits: DailyUnits? = null,
+    @SerialName("daily") val daily: Daily? = null
 )
 
+@Serializable
 data class Current(
-    @SerializedName("time") var time: Int,
-    @SerializedName("interval") var interval: Int,
-    @SerializedName("temperature_2m") var temperature2m: Double,
-    @SerializedName("weathercode") var weathercode: Int
+    @SerialName("time") val time: Int? = null,
+    @SerialName("interval") val interval: Int? = null,
+    @SerialName("temperature_2m") val temperature2m: Double? = 0.0,
+    @SerialName("weathercode") val weathercode: Int? = null
 )
 
+@Serializable
 data class CurrentUnits(
-    @SerializedName("time") var time: String,
-    @SerializedName("interval") var interval: String,
-    @SerializedName("temperature_2m") var temperature2m: String,
-    @SerializedName("weathercode") var weathercode: String
+    @SerialName("time") val time: String? = null,
+    @SerialName("interval") val interval: String? = null,
+    @SerialName("temperature_2m") val temperature2m: String? = null,
+    @SerialName("weathercode") val weathercode: String? = null
 )
 
+@Serializable
 data class Daily(
-    @SerializedName("time") var time: List<Int> = listOf(),
-    @SerializedName("weathercode") var weathercode: List<Int> = listOf(),
-    @SerializedName("temperature_2m_max") var temperature2mMax: List<Double> = listOf(),
-    @SerializedName("temperature_2m_min") var temperature2mMin: List<Double> = listOf()
+    @SerialName("time") val time: List<Int> = listOf(),
+    @SerialName("weathercode") val weathercode: List<Int> = listOf(),
+    @SerialName("temperature_2m_max") val temperature2mMax: List<Double> = listOf(),
+    @SerialName("temperature_2m_min") val temperature2mMin: List<Double> = listOf()
 )
 
+@Serializable
 data class DailyUnits(
-    @SerializedName("time") var time: String,
-    @SerializedName("weathercode") var weathercode: String,
-    @SerializedName("temperature_2m_max") var temperature2mMax: String,
-    @SerializedName("temperature_2m_min") var temperature2mMin: String
+    @SerialName("time") val time: String? = null,
+    @SerialName("weathercode") val weathercode: String? = null,
+    @SerialName("temperature_2m_max") val temperature2mMax: String? = null,
+    @SerialName("temperature_2m_min") val temperature2mMin: String? = null
 )

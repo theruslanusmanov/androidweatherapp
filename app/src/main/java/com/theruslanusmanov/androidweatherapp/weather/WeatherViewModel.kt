@@ -1,13 +1,17 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.theruslanusmanov.androidweatherapp.R
+import com.theruslanusmanov.androidweatherapp.common.AssetUtils
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
 import com.theruslanusmanov.androidweatherapp.data.LocationRepository
 import com.theruslanusmanov.androidweatherapp.data.WeatherRepository
 import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,25 +19,41 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import javax.inject.Inject
 
-const val DEFAULT_LATITUDE = 55.7887F
-const val DEFAULT_LONGITUDE = 55.7887F
-const val DEFAULT_LOCATION_NAME = "Kazan"
+const val DEFAULT_LATITUDE = 55.7887
+const val DEFAULT_LONGITUDE = 55.7887
+const val DEFAULT_LOCATION_NAME = "Kazan'"
+
+interface WeatherViewModel {
+    val loading: StateFlow<Boolean>
+    val forecastState: StateFlow<Forecast?>
+    val locationName: StateFlow<String>
+}
+
+class FakeWeatherViewModel() : ViewModel(), WeatherViewModel {
+    override val loading: StateFlow<Boolean> = MutableStateFlow(false)
+    override val forecastState: StateFlow<Forecast?> = MutableStateFlow(Forecast())
+    override val locationName: StateFlow<String> = MutableStateFlow(DEFAULT_LOCATION_NAME)
+}
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(
+class DefaultWeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationRepository: LocationRepository,
-) : ViewModel() {
+) : ViewModel(), WeatherViewModel {
 
     private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading.asStateFlow()
+    override val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
     private val _forecastState = MutableStateFlow<Forecast?>(null)
-    val forecastState: StateFlow<Forecast?> = _forecastState.asStateFlow()
+    override val forecastState: StateFlow<Forecast?> = _forecastState.asStateFlow()
 
-    val locationName: StateFlow<String> = locationRepository.getLocationName()
+    override val locationName: StateFlow<String> = locationRepository.getLocationName()
         .map {
             if (it.isNullOrEmpty()) DEFAULT_LOCATION_NAME else it
         }
