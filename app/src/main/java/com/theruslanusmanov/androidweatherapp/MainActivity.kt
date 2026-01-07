@@ -18,8 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.search.SearchView
 import com.theruslanusmanov.androidweatherapp.search.SearchViewModel
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
-import com.theruslanusmanov.androidweatherapp.weather.WeatherView
 import com.theruslanusmanov.androidweatherapp.weather.DefaultWeatherViewModel
+import com.theruslanusmanov.androidweatherapp.weather.WeatherView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,9 +1,9 @@
-package com.theruslanusmanov.androidweatherapp.data
+package com.theruslanusmanov.androidweatherapp.data.repository
 
 import com.theruslanusmanov.androidweatherapp.common.BaseApiResponse
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
-import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import com.theruslanusmanov.androidweatherapp.domain.models.Geocode
+import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

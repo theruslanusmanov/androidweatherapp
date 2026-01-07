@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
-import com.theruslanusmanov.androidweatherapp.data.LocationRepository
-import com.theruslanusmanov.androidweatherapp.data.SearchRepository
+import com.theruslanusmanov.androidweatherapp.data.repository.LocationRepository
+import com.theruslanusmanov.androidweatherapp.data.repository.SearchRepository
 import com.theruslanusmanov.androidweatherapp.domain.models.Geocode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview

@@ -1,6 +1,5 @@
 package com.theruslanusmanov.androidweatherapp.di
 
-import com.theruslanusmanov.androidweatherapp.Config.FORECAST_HOST
 import com.theruslanusmanov.androidweatherapp.network.ForecastApi
 import com.theruslanusmanov.androidweatherapp.network.GeocodeApi
 import dagger.Module
@@ -24,12 +23,6 @@ object RestNetwork {
 
     @Singleton
     @Provides
-    fun provideBaseForecastURL(): String {
-        return FORECAST_HOST
-    }
-
-    @Singleton
-    @Provides
     fun provideInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
@@ -49,10 +42,11 @@ object RestNetwork {
     @Singleton
     @Provides
     fun provideRestAdapter(
-        baseURL: String,
         okHttpClient: OkHttpClient
     ): Retrofit {
-        val retro = Retrofit.Builder().baseUrl(baseURL).client(okHttpClient)
+        val retro = Retrofit.Builder()
+            .baseUrl("https://api.open-meteo.com/v1/")
+            .client(okHttpClient)
             .addConverterFactory(
                 Json.asConverterFactory(
                     "application/json; charset=utf-8".toMediaType()

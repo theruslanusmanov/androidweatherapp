@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.data
+package com.theruslanusmanov.androidweatherapp.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore

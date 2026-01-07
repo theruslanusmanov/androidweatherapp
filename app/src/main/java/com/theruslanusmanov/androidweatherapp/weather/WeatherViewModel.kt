@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
-import com.theruslanusmanov.androidweatherapp.data.LocationRepository
-import com.theruslanusmanov.androidweatherapp.data.WeatherRepository
+import com.theruslanusmanov.androidweatherapp.data.repository.LocationRepository
+import com.theruslanusmanov.androidweatherapp.data.repository.WeatherRepository
 import com.theruslanusmanov.androidweatherapp.domain.models.Forecast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -57,9 +56,6 @@ class DefaultWeatherViewModel @Inject constructor(
         )
 
     init {
-        viewModelScope.launch {
-            forecastState.collect { Log.d("RESULT", it.toString()) }
-        }
         getForecast(Pair(DEFAULT_LATITUDE.toString(), DEFAULT_LONGITUDE.toString()))
         viewModelScope.launch {
             locationRepository.getLocation().collect { location ->
@@ -72,7 +68,6 @@ class DefaultWeatherViewModel @Inject constructor(
         _loading.value = true
         when (val result = weatherRepository.getForecast(location)) {
             is NetworkResult.Success -> {
-                Log.d("RESULT1", result.data.toString())
                 result.data?.let {
                     _forecastState.value = it
                 }

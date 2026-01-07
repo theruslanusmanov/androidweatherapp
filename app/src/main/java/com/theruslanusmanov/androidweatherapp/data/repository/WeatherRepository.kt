@@ -1,4 +1,4 @@
-package com.theruslanusmanov.androidweatherapp.data
+package com.theruslanusmanov.androidweatherapp.data.repository
 
 import com.theruslanusmanov.androidweatherapp.common.BaseApiResponse
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
