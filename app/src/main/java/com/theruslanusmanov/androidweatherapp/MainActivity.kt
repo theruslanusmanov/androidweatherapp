@@ -27,12 +27,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Forecast ViewModel
-        val weatherViewModel: DefaultWeatherViewModel by viewModels()
-
-        // Search ViewModel
-        val searchViewModel: SearchViewModel by viewModels()
-
         enableEdgeToEdge()
         setContent {
             AndroidWeatherAppTheme {
@@ -48,25 +42,16 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // * Main
                         composable<WeatherRoutes.Main> {
-                            WeatherView(weatherViewModel, navController)
+                            WeatherView(onSearch = {navController.navigate(WeatherRoutes.Search)})
                         }
                         // * Search
                         composable<WeatherRoutes.Search> {
-                            SearchView(searchViewModel, navController)
+                            SearchView(onBack = {navController.navigate(WeatherRoutes.Main)})
                         }
                     }
                 }
             }
 
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AndroidWeatherAppTheme {
-        WeatherView({} as DefaultWeatherViewModel, {} as NavController)
     }
 }

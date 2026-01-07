@@ -1,9 +1,12 @@
 package com.theruslanusmanov.androidweatherapp.weather
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -21,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,10 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.theruslanusmanov.androidweatherapp.R
-import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 import kotlinx.datetime.Instant
@@ -46,12 +47,11 @@ val textColor = Color.White
 
 @Composable
 fun WeatherView(
-    weatherViewModel: WeatherViewModel = hiltViewModel<DefaultWeatherViewModel>(),
-    navController: NavController
+    onSearch: () -> Unit,
+    weatherViewModel: WeatherViewModel = hiltViewModel<DefaultWeatherViewModel>()
 ) {
-    val forecast by weatherViewModel.forecastState.collectAsStateWithLifecycle()
+    val uiState by weatherViewModel.uiState.collectAsStateWithLifecycle()
     val locationName by weatherViewModel.locationName.collectAsStateWithLifecycle()
-    val loading by weatherViewModel.loading.collectAsStateWithLifecycle()
 
     LazyColumn(
         horizontalAlignment = Alignment.Start,
@@ -73,7 +73,7 @@ fun WeatherView(
                     modifier = Modifier
                         .size(48.dp)
                         .clickable {
-                            navController.navigate(WeatherRoutes.Search)
+                            onSearch()
                         }
                 )
             }
@@ -82,20 +82,30 @@ fun WeatherView(
         }
         // main info
         item {
-            Column {
-                Date()
-                LocationName(name = locationName)
-                if (!loading) {
-                    forecast?.let { forecast ->
-                        Temperature(value = forecast.current?.temperature2m)
-                        forecast.current?.weathercode?.let {
+            when (val state = uiState) {
+                WeatherViewState.Loading -> {
+                    val itemModifier = Modifier
+                        .height(240.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.DarkGray)
+                    repeat(1) {
+                        Spacer(modifier = itemModifier)
+                    }
+                }
+
+                is WeatherViewState.Success -> {
+                    Column {
+                        Date()
+                        LocationName(name = locationName)
+                        Temperature(value = state.data.current?.temperature2m)
+                        state.data.current?.weathercode?.let {
                             WeatherDescription(weathercode = it)
                         }
                     }
-                } else {
-                    Text("LOADING...")
                 }
             }
+
             Spacer(modifier = Modifier.height(100.dp))
         }
         // 10-day forecast
@@ -108,12 +118,23 @@ fun WeatherView(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        if (!loading) {
-            forecast?.let { forecast ->
-                repeat(10) { index ->
-                    item {
+        when (val state = uiState) {
+            WeatherViewState.Loading -> {
+                val itemModifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.DarkGray)
+                items(10) {
+                    Spacer(modifier = itemModifier)
+                }
+            }
+
+            is WeatherViewState.Success -> {
+                state.data.let { data ->
+                    items(10) { index ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            forecast.daily?.time[index]?.let {
+                            data.daily?.time[index]?.let {
                                 val instant =
                                     Instant.fromEpochSeconds(it.toLong())
                                 val dateTime = instant.toLocalDateTime(TimeZone.UTC)
@@ -125,10 +146,10 @@ fun WeatherView(
                             }
                             Spacer(Modifier.width(20.dp))
                             DateForecast(
-                                weatherCode = forecast.daily?.weathercode[index] ?: 0,
-                                maxTemperature = forecast.daily?.temperature2mMax[index]?.toInt()
+                                weatherCode = data.daily?.weathercode[index] ?: 0,
+                                maxTemperature = data.daily?.temperature2mMax[index]?.toInt()
                                     .toString(),
-                                minTemperature = forecast.daily?.temperature2mMin[index]?.toInt()
+                                minTemperature = data.daily?.temperature2mMin[index]?.toInt()
                                     .toString()
                             )
                         }
@@ -337,7 +358,7 @@ fun WeatherViewPreview() {
     AndroidWeatherAppTheme {
         WeatherView(
             weatherViewModel = hiltViewModel<FakeWeatherViewModel>(),
-            navController = rememberNavController()
+            onSearch = {}
         )
     }
 }

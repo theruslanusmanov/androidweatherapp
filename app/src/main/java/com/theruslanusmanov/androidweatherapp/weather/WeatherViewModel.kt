@@ -22,14 +22,14 @@ const val DEFAULT_LONGITUDE = 55.7887
 const val DEFAULT_LOCATION_NAME = "Kazan'"
 
 interface WeatherViewModel {
-    val loading: StateFlow<Boolean>
-    val forecastState: StateFlow<Forecast>
+    val uiState: StateFlow<WeatherViewState>
     val locationName: StateFlow<String>
 }
 
 class FakeWeatherViewModel() : ViewModel(), WeatherViewModel {
-    override val loading: StateFlow<Boolean> = MutableStateFlow(false)
-    override val forecastState: StateFlow<Forecast> = MutableStateFlow(Forecast())
+    override val uiState: StateFlow<WeatherViewState> = MutableStateFlow(
+        WeatherViewState.Success(Forecast())
+    )
     override val locationName: StateFlow<String> = MutableStateFlow(DEFAULT_LOCATION_NAME)
 }
 
@@ -39,11 +39,8 @@ class DefaultWeatherViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
 ) : ViewModel(), WeatherViewModel {
 
-    private val _loading = MutableStateFlow(false)
-    override val loading: StateFlow<Boolean> = _loading.asStateFlow()
-
-    private val _forecastState = MutableStateFlow(Forecast())
-    override val forecastState: StateFlow<Forecast> = _forecastState.asStateFlow()
+    private val _uiState = MutableStateFlow<WeatherViewState>(WeatherViewState.Loading)
+    override val uiState: StateFlow<WeatherViewState> = _uiState.asStateFlow()
 
     override val locationName: StateFlow<String> = locationRepository.getLocationName()
         .map {
@@ -65,11 +62,10 @@ class DefaultWeatherViewModel @Inject constructor(
     }
 
     private fun getForecast(location: Pair<String, String>) = viewModelScope.launch {
-        _loading.value = true
         when (val result = weatherRepository.getForecast(location)) {
             is NetworkResult.Success -> {
                 result.data?.let {
-                    _forecastState.value = it
+                    _uiState.value = WeatherViewState.Success(it)
                 }
             }
 
@@ -77,6 +73,5 @@ class DefaultWeatherViewModel @Inject constructor(
                 Log.d("WEATHER_ERROR", result.message.toString())
             }
         }
-        _loading.value = false
     }
 }

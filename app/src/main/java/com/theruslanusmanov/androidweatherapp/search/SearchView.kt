@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
@@ -34,14 +35,14 @@ import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 
 
 @Composable
-fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
+fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewModel()) {
     val searchResults by searchViewModel.searchState.collectAsStateWithLifecycle()
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Icon(
             modifier = Modifier.clickable {
-                navController.navigate(WeatherRoutes.Main)
+                onBack()
             },
             painter = painterResource(id = R.drawable.ic_back),
             contentDescription = "Search icon",
@@ -78,7 +79,7 @@ fun SearchView(searchViewModel: SearchViewModel, navController: NavController) {
                                     )
                                     searchViewModel.saveLocationName(searchResults!!.results[index].name!!)
                                     // go back
-                                    navController.navigate(WeatherRoutes.Main)
+                                    onBack()
                                 }
                         ) {
                             Text(
