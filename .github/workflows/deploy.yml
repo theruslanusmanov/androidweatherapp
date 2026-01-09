@@ -55,7 +55,7 @@ jobs:
 
       - name: Clone Keystore Repository
         run: |
-          git clone git@github.com:theruslanusmanov/android-keystore.git $RUNNER_TEMP/keystore-repo
+          git clone https://${{ secrets.KEYSTORE_REPO_PAT }}@github.com/theruslanusmanov/android-keystore.git $RUNNER_TEMP/keystore-repo
 
       - name: Sign APK
         run: |
