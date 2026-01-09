@@ -163,9 +163,9 @@ jobs:
       - name: Deploy to Google Play Internal Testing
         uses: r0adkll/upload-google-play@v1.1.3
         with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.theruslanusmanov.androidweatherapp
           releaseFiles: weatherapp-${{ env.VERSION }}.aab
           track: internal
           status: completed
-          changesNotSentForReview: false
+          changesNotSentForReview: true
