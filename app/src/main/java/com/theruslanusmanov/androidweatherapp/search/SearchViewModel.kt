@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.theruslanusmanov.androidweatherapp.common.NetworkResult
 import com.theruslanusmanov.androidweatherapp.data.repository.LocationRepository
 import com.theruslanusmanov.androidweatherapp.data.repository.SearchRepository
-import com.theruslanusmanov.androidweatherapp.domain.models.Geocode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,26 +30,25 @@ class SearchViewModel @Inject constructor(
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     @OptIn(FlowPreview::class)
-    val searchState: StateFlow<Geocode?> = searchQuery
+    val uiState: StateFlow<SearchViewState> = searchQuery
         .debounce(1000L)
         .distinctUntilChanged()
         .filter { it.isNotBlank() }
         .map { query ->
             when (val result = searchRepository.getSearch(query)) {
                 is NetworkResult.Success -> {
-                    result.data
+                    SearchViewState.Success(result.data)
                 }
 
                 else -> {
-                    Log.d("WEATHER_ERROR", result.message.toString())
-                    null
+                    SearchViewState.Empty
                 }
             }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null,
+            initialValue = SearchViewState.Empty,
         )
 
     fun search(query: String) {

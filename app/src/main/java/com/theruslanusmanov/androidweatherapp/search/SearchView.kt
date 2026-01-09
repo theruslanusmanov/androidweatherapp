@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,14 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.theruslanusmanov.androidweatherapp.R
-import com.theruslanusmanov.androidweatherapp.WeatherRoutes
 
 
 @Composable
 fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewModel()) {
-    val searchResults by searchViewModel.searchState.collectAsStateWithLifecycle()
+    val uiState by searchViewModel.uiState.collectAsStateWithLifecycle()
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
@@ -54,47 +53,62 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
         })
 
         // results
-        if (searchResults?.results?.isEmpty() == true) {
-            Text(text = "LOADING...", color = Color.White)
-        } else {
-            searchResults?.let {
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    for (index in 0 until searchResults!!.results.size) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .height(48.dp)
-                                .fillMaxWidth()
-                                .padding(8.dp, 2.dp)
-                                .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
-                                .background(Color.DarkGray)
-                                .clickable {
-                                    // save location
-                                    searchViewModel.saveLocation(
-                                        Pair(
-                                            searchResults!!.results[index].latitude.toString(),
-                                            searchResults!!.results[index].longitude.toString()
+        when (val state = uiState) {
+            SearchViewState.Loading -> {
+                val itemModifier = Modifier
+                    .height(40.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.DarkGray)
+                repeat(10) {
+                    Spacer(modifier = itemModifier)
+                }
+            }
+
+            is SearchViewState.Success -> {
+                state.let {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        for (index in 0 until state.data!!.results.size) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(48.dp)
+                                    .fillMaxWidth()
+                                    .padding(8.dp, 2.dp)
+                                    .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
+                                    .background(Color.DarkGray)
+                                    .clickable {
+                                        // save location
+                                        searchViewModel.saveLocation(
+                                            Pair(
+                                                state.data!!.results[index].latitude.toString(),
+                                                state.data!!.results[index].longitude.toString()
+                                            )
                                         )
-                                    )
-                                    searchViewModel.saveLocationName(searchResults!!.results[index].name!!)
-                                    // go back
-                                    onBack()
-                                }
-                        ) {
-                            Text(
-                                text = searchResults!!.results[index].country.toString(),
-                                color = Color.White,
-                                modifier = Modifier.padding(start = 48.dp)
-                            )
-                            Text(
-                                text = searchResults!!.results[index].name.toString(),
-                                color = Color.White,
-                                modifier = Modifier.padding(end = 48.dp)
-                            )
+                                        searchViewModel.saveLocationName(state.data!!.results[index].name!!)
+                                        // go back
+                                        onBack()
+                                    }
+                            ) {
+                                Text(
+                                    text = state.data!!.results[index].country.toString(),
+                                    color = Color.White,
+                                    modifier = Modifier.padding(start = 48.dp)
+                                )
+                                Text(
+                                    text = state.data!!.results[index].name.toString(),
+                                    color = Color.White,
+                                    modifier = Modifier.padding(end = 48.dp)
+                                )
+                            }
                         }
                     }
                 }
+            }
+
+            SearchViewState.Empty -> {
+                Text("EMPTY")
             }
         }
     }
