@@ -23,14 +23,21 @@ const val DEFAULT_LOCATION_NAME = "Kazan'"
 
 interface WeatherViewModel {
     val uiState: StateFlow<WeatherViewState>
+    val location: StateFlow<Pair<String, String>>
     val locationName: StateFlow<String>
+
+    fun refresh()
 }
 
 class FakeWeatherViewModel() : ViewModel(), WeatherViewModel {
     override val uiState: StateFlow<WeatherViewState> = MutableStateFlow(
         WeatherViewState.Success(Forecast())
     )
+    override val location: StateFlow<Pair<String, String>> =
+        MutableStateFlow(Pair(DEFAULT_LATITUDE.toString(), DEFAULT_LONGITUDE.toString()))
     override val locationName: StateFlow<String> = MutableStateFlow(DEFAULT_LOCATION_NAME)
+
+    override fun refresh() {}
 }
 
 @HiltViewModel
@@ -41,6 +48,10 @@ class DefaultWeatherViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<WeatherViewState>(WeatherViewState.Loading)
     override val uiState: StateFlow<WeatherViewState> = _uiState.asStateFlow()
+
+    private val _location =
+        MutableStateFlow(Pair(DEFAULT_LATITUDE.toString(), DEFAULT_LONGITUDE.toString()))
+    override val location: StateFlow<Pair<String, String>> = _location.asStateFlow()
 
     override val locationName: StateFlow<String> = locationRepository.getLocationName()
         .map {
@@ -53,12 +64,19 @@ class DefaultWeatherViewModel @Inject constructor(
         )
 
     init {
-        getForecast(Pair(DEFAULT_LATITUDE.toString(), DEFAULT_LONGITUDE.toString()))
+        getForecast(location.value)
         viewModelScope.launch {
             locationRepository.getLocation().collect { location ->
-                getForecast(location as Pair<String, String>)
+                location?.let {
+                    _location.value = location as Pair<String, String>
+                    getForecast(location as Pair<String, String>)
+                }
             }
         }
+    }
+
+    override fun refresh() {
+        getForecast(location.value)
     }
 
     private fun getForecast(location: Pair<String, String>) = viewModelScope.launch {

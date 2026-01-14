@@ -16,10 +16,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.theruslanusmanov.androidweatherapp.R
 import com.theruslanusmanov.androidweatherapp.ui.theme.AndroidWeatherAppTheme
 import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -43,6 +51,7 @@ import java.util.Locale
 
 val textColor = Color.White
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherView(
     onSearch: () -> Unit,
@@ -50,106 +59,123 @@ fun WeatherView(
 ) {
     val uiState by weatherViewModel.uiState.collectAsStateWithLifecycle()
     val locationName by weatherViewModel.locationName.collectAsStateWithLifecycle()
+    // pull to refresh
+    val coroutineScope = rememberCoroutineScope()
+    var isRefreshing by remember { mutableStateOf(false) }
+    val onRefresh: () -> Unit = {
+        isRefreshing = true
+        coroutineScope.launch {
+            delay(1500)
+            weatherViewModel.refresh()
+            isRefreshing = false
+        }
+    }
 
-    LazyColumn(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
     ) {
-        item {
-            // header
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search),
-                    contentDescription = "Search icon",
-                    tint = textColor,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            onSearch()
+        LazyColumn(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+        ) {
+            item {
+                // header
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "Search icon",
+                        tint = textColor,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable {
+                                onSearch()
+                            }
+                    )
+                }
+
+                Spacer(Modifier.height(32.dp))
+            }
+            // main info
+            item {
+                when (val state = uiState) {
+                    WeatherViewState.Loading -> {
+                        val itemModifier = Modifier
+                            .height(240.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color.DarkGray)
+                        repeat(1) {
+                            Spacer(modifier = itemModifier)
                         }
+                    }
+
+                    is WeatherViewState.Success -> {
+                        Column {
+                            Date()
+                            LocationName(name = locationName)
+                            Temperature(value = state.data.current?.temperature2m)
+                            state.data.current?.weathercode?.let {
+                                WeatherDescription(weathercode = it)
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(100.dp))
+            }
+            // 10-day forecast
+            item {
+                Text(
+                    text = "Daily",
+                    color = textColor,
+                    textAlign = TextAlign.Start,
+                    style = weatherTypography.headlineLarge,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-
-            Spacer(Modifier.height(32.dp))
-        }
-        // main info
-        item {
             when (val state = uiState) {
                 WeatherViewState.Loading -> {
                     val itemModifier = Modifier
-                        .height(240.dp)
+                        .height(80.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp))
                         .background(Color.DarkGray)
-                    repeat(1) {
+                    items(10) {
                         Spacer(modifier = itemModifier)
                     }
                 }
 
                 is WeatherViewState.Success -> {
-                    Column {
-                        Date()
-                        LocationName(name = locationName)
-                        Temperature(value = state.data.current?.temperature2m)
-                        state.data.current?.weathercode?.let {
-                            WeatherDescription(weathercode = it)
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(100.dp))
-        }
-        // 10-day forecast
-        item {
-            Text(
-                text = "Daily",
-                color = textColor,
-                textAlign = TextAlign.Start,
-                style = weatherTypography.headlineLarge,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        when (val state = uiState) {
-            WeatherViewState.Loading -> {
-                val itemModifier = Modifier
-                    .height(80.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.DarkGray)
-                items(10) {
-                    Spacer(modifier = itemModifier)
-                }
-            }
-
-            is WeatherViewState.Success -> {
-                state.data.let { data ->
-                    items(10) { index ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            data.daily?.time[index]?.let {
-                                val instant =
-                                    Instant.fromEpochSeconds(it.toLong())
-                                val dateTime = instant.toLocalDateTime(TimeZone.UTC)
-                                DateButton(
-                                    dayWeek = dateTime.dayOfWeek.name.take(3),
-                                    day = dateTime.dayOfMonth.toString(),
-                                    month = dateTime.month.name.take(3)
+                    state.data.let { data ->
+                        items(10) { index ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                data.daily?.time[index]?.let {
+                                    val instant =
+                                        Instant.fromEpochSeconds(it.toLong())
+                                    val dateTime = instant.toLocalDateTime(TimeZone.UTC)
+                                    DateButton(
+                                        dayWeek = dateTime.dayOfWeek.name.take(3),
+                                        day = dateTime.dayOfMonth.toString(),
+                                        month = dateTime.month.name.take(3)
+                                    )
+                                }
+                                Spacer(Modifier.width(20.dp))
+                                DateForecast(
+                                    weatherCode = data.daily?.weathercode[index] ?: 0,
+                                    maxTemperature = data.daily?.temperature2mMax[index]?.toInt()
+                                        .toString(),
+                                    minTemperature = data.daily?.temperature2mMin[index]?.toInt()
+                                        .toString()
                                 )
                             }
-                            Spacer(Modifier.width(20.dp))
-                            DateForecast(
-                                weatherCode = data.daily?.weathercode[index] ?: 0,
-                                maxTemperature = data.daily?.temperature2mMax[index]?.toInt()
-                                    .toString(),
-                                minTemperature = data.daily?.temperature2mMin[index]?.toInt()
-                                    .toString()
-                            )
                         }
                     }
                 }
