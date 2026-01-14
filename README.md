@@ -13,5 +13,4 @@ versionName = "0.2.0"
 
 ## TODO
 
-- Swipe to update main screen
 - Add Tests
