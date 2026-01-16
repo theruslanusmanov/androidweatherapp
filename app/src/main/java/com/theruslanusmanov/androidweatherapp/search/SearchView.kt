@@ -82,22 +82,22 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
                                         // save location
                                         searchViewModel.saveLocation(
                                             Pair(
-                                                state.data!!.results[index].latitude.toString(),
-                                                state.data!!.results[index].longitude.toString()
+                                                state.data.results[index].latitude.toString(),
+                                                state.data.results[index].longitude.toString()
                                             )
                                         )
-                                        searchViewModel.saveLocationName(state.data!!.results[index].name!!)
+                                        searchViewModel.saveLocationName(state.data.results[index].name!!)
                                         // go back
                                         onBack()
                                     }
                             ) {
                                 Text(
-                                    text = state.data!!.results[index].country.toString(),
+                                    text = state.data.results[index].country.toString(),
                                     color = Color.White,
                                     modifier = Modifier.padding(start = 48.dp)
                                 )
                                 Text(
-                                    text = state.data!!.results[index].name.toString(),
+                                    text = state.data.results[index].name.toString(),
                                     color = Color.White,
                                     modifier = Modifier.padding(end = 48.dp)
                                 )
