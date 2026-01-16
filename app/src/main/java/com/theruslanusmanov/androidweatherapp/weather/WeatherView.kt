@@ -112,9 +112,7 @@ fun WeatherView(
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
                             .background(Color.DarkGray)
-                        repeat(1) {
-                            Spacer(modifier = itemModifier)
-                        }
+                        Spacer(modifier = itemModifier)
                     }
 
                     is WeatherViewState.Success -> {
