@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -26,11 +27,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.theruslanusmanov.androidweatherapp.R
+import com.theruslanusmanov.androidweatherapp.ui.theme.weatherTypography
 
 
 @Composable
@@ -40,7 +44,7 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
 
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Icon(
-            modifier = Modifier.clickable {
+            modifier = Modifier.size(32.dp).clickable {
                 onBack()
             },
             painter = painterResource(id = R.drawable.ic_back),
@@ -73,11 +77,13 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
+
                                     .height(48.dp)
                                     .fillMaxWidth()
-                                    .padding(8.dp, 2.dp)
+
                                     .clip(RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp))
-                                    .background(Color.DarkGray)
+                                    .background(Color.White.copy(alpha = 0.1f))
+                                    .padding(8.dp, 2.dp)
                                     .clickable {
                                         // save location
                                         searchViewModel.saveLocation(
@@ -94,12 +100,12 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
                                 Text(
                                     text = state.data.results[index].country.toString(),
                                     color = Color.White,
-                                    modifier = Modifier.padding(start = 48.dp)
+                                    style = weatherTypography.bodySmall,
                                 )
                                 Text(
                                     text = state.data.results[index].name.toString(),
                                     color = Color.White,
-                                    modifier = Modifier.padding(end = 48.dp)
+                                    style = weatherTypography.bodySmall,
                                 )
                             }
                         }
@@ -108,7 +114,7 @@ fun SearchView(onBack: () -> Unit, searchViewModel: SearchViewModel = hiltViewMo
             }
 
             SearchViewState.Empty -> {
-                Text("EMPTY")
+
             }
         }
     }
@@ -131,7 +137,7 @@ fun Search(
     OutlinedTextField(
         value = searchText,
         onValueChange = onSearch,
-        placeholder = { Text(text = "Search") },
+        placeholder = { Text(text = "Search", style = weatherTypography.bodySmall) },
         singleLine = true,
         leadingIcon = {
             Icon(
@@ -151,9 +157,10 @@ fun Search(
         modifier = Modifier
             .clip(RoundedCornerShape(percent = 100))
             .fillMaxWidth()
-            .background(Color.DarkGray)
+            .background(Color.White.copy(alpha = 0.2f))
             .focusRequester(focusRequester)
-            .testTag("SearchTextField")
+            .testTag("SearchTextField"),
+        textStyle = weatherTypography.bodySmall
     )
 }
 

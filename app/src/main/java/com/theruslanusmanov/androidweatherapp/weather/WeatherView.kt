@@ -84,26 +84,6 @@ fun WeatherView(
                 .fillMaxWidth()
                 .padding(20.dp),
         ) {
-            item {
-                // header
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = "Search icon",
-                        tint = textColor,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable {
-                                onSearch()
-                            }
-                    )
-                }
-
-                Spacer(Modifier.height(32.dp))
-            }
             // main info
             item {
                 when (val state = uiState) {
@@ -117,7 +97,9 @@ fun WeatherView(
                     }
 
                     is WeatherViewState.Success -> {
-                        Column {
+                        Column(modifier = Modifier.padding(top = 50.dp).clickable {
+                            onSearch()
+                        }) {
                             Date()
                             LocationName(name = locationName)
                             Temperature(value = state.data.current?.temperature2m)
@@ -128,7 +110,7 @@ fun WeatherView(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(50.dp))
             }
             // 10-day forecast
             item {
@@ -228,9 +210,16 @@ fun LocationName(name: String) {
 
 @Composable
 fun Temperature(value: Double? = 0.0) {
+    val color: Color = value?.let {
+        if (it > 0) {
+            Color(255, 239, 144)
+        } else {
+            Color(174, 210, 232)
+        }
+    } as Color
     Text(
         text = "${value?.toInt()}°",
-        color = Color.White,
+        color = color,
         textAlign = TextAlign.Center,
         style = weatherTypography.displayLarge,
         modifier = Modifier
@@ -315,13 +304,13 @@ fun DateButton(dayWeek: String, day: String, month: String) {
             .aspectRatio(1f)
             .border(
                 width = 1.dp,
-                color = Color(253, 131, 131, 191),
+                color = Color(255, 255, 255, 191),
                 shape = RoundedCornerShape(100.dp)
             )
     ) {
         Text(
             text = dayWeek,
-            color = Color(253, 131, 131, 191),
+            color = Color(255, 255, 255, 191),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             style = weatherTypography.bodyMedium,
@@ -362,14 +351,28 @@ fun DateForecast(
         Column(
             horizontalAlignment = Alignment.End
         ) {
+            val maxColor: Color = maxTemperature.toInt()?.let {
+                if (it > 0) {
+                    Color(255, 239, 144)
+                } else {
+                    Color(174, 210, 232)
+                }
+            } as Color
             Text(
-                color = textColor,
+                color = maxColor,
                 text = "$maxTemperature°",
                 textAlign = TextAlign.Center,
                 style = weatherTypography.bodyLarge,
             )
+            val minColor: Color = maxTemperature.toInt()?.let {
+                if (it > 0) {
+                    Color(255, 239, 144)
+                } else {
+                    Color(174, 210, 232)
+                }
+            } as Color
             Text(
-                color = textColor,
+                color = minColor,
                 text = "$minTemperature°",
                 textAlign = TextAlign.Center,
                 style = weatherTypography.bodyMedium,
@@ -423,7 +426,9 @@ fun DateForecast(
                     painter = painterResource(id = R.drawable.ic_navigation),
                     contentDescription = "Weather icon",
                     tint = textColor,
-                    modifier = Modifier.size(18.dp).rotate(degrees = windDirection.toFloat())
+                    modifier = Modifier
+                        .size(18.dp)
+                        .rotate(degrees = windDirection.toFloat())
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(
