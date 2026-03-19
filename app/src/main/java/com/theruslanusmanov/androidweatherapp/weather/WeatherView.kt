@@ -168,10 +168,20 @@ fun WeatherView(
                                 Spacer(Modifier.width(20.dp))
                                 DateForecast(
                                     weatherCode = data.daily?.weathercode[index] ?: 0,
-                                    maxTemperature = data.daily?.temperature2mMax[index]?.toInt()
-                                        .toString(),
-                                    minTemperature = data.daily?.temperature2mMin[index]?.toInt()
-                                        .toString()
+                                    maxTemperature = data.daily?.temperature2mMax[index]?.toInt()?.let {
+                                        if (it > 0) {
+                                            "+$it"
+                                        } else {
+                                            it.toString()
+                                        }
+                                    } as String,
+                                    minTemperature = data.daily?.temperature2mMin[index]?.toInt()?.let {
+                                        if (it > 0) {
+                                            "+$it"
+                                        } else {
+                                            it.toString()
+                                        }
+                                    } as String
                                 )
                             }
                         }
@@ -336,35 +346,27 @@ fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: Strin
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                color = textColor,
+                text = maxTemperature,
+                textAlign = TextAlign.Center,
+                style = weatherTypography.bodyLarge,
+            )
+            Text(
+                color = textColor,
+                text = minTemperature,
+                textAlign = TextAlign.Center,
+                style = weatherTypography.bodyMedium,
+            )
+        }
         Icon(
             painter = painterResource(id = getWeatherIcon(weatherCode)),
             contentDescription = "Weather icon",
             tint = textColor,
             modifier = Modifier.size(30.dp)
-        )
-        Text(
-            color = textColor,
-            text = "MIN",
-            textAlign = TextAlign.Center,
-            style = weatherTypography.bodySmall,
-        )
-        Text(
-            color = textColor,
-            text = maxTemperature,
-            textAlign = TextAlign.Center,
-            style = weatherTypography.bodyMedium,
-        )
-        Text(
-            color = textColor,
-            text = "MAX",
-            textAlign = TextAlign.Center,
-            style = weatherTypography.bodySmall,
-        )
-        Text(
-            color = textColor,
-            text = minTemperature,
-            textAlign = TextAlign.Center,
-            style = weatherTypography.bodyMedium,
         )
     }
 }

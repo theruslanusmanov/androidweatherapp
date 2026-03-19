@@ -37,6 +37,14 @@ val weatherTypography = Typography(
         lineHeight = 60.sp,
         letterSpacing = 0.sp,
     ),
+    bodyLarge = TextStyle(
+        color = Color.White,
+        fontFamily = interFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 28.sp,
+        lineHeight = 12.sp,
+        letterSpacing = 0.sp
+    ),
     bodyMedium = TextStyle(
         color = Color.White,
         fontFamily = interFontFamily,
