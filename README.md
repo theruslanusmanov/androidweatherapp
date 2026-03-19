@@ -13,4 +13,5 @@ versionName = "0.2.0"
 
 ## TODO
 
-- Add Tests
+- Location
+- Search
