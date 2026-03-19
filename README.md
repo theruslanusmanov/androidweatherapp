@@ -1,6 +1,6 @@
 # Android weather app
 
-![Preview](preview.png)
+<img src="preview.png" width="300">
 
 ## TODO
 
