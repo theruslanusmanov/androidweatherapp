@@ -47,7 +47,10 @@ data class Daily(
     @SerialName("time") val time: List<Int> = emptyList(),
     @SerialName("weathercode") val weathercode: List<Int> = emptyList(),
     @SerialName("temperature_2m_max") val temperature2mMax: List<Double> = emptyList(),
-    @SerialName("temperature_2m_min") val temperature2mMin: List<Double> = emptyList()
+    @SerialName("temperature_2m_min") val temperature2mMin: List<Double> = emptyList(),
+    @SerialName("wind_speed_10m_max") val windSpeed: List<Double> = emptyList(),
+    @SerialName("wind_direction_10m_dominant") val windDirection: List<Int> = emptyList(),
+    @SerialName("rain_sum") val rainSum: List<Double> = emptyList(),
 )
 
 @Serializable

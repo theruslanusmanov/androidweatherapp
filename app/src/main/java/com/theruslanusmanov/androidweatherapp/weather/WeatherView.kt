@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -168,20 +169,25 @@ fun WeatherView(
                                 Spacer(Modifier.width(20.dp))
                                 DateForecast(
                                     weatherCode = data.daily?.weathercode[index] ?: 0,
-                                    maxTemperature = data.daily?.temperature2mMax[index]?.toInt()?.let {
-                                        if (it > 0) {
-                                            "+$it"
-                                        } else {
-                                            it.toString()
-                                        }
-                                    } as String,
-                                    minTemperature = data.daily?.temperature2mMin[index]?.toInt()?.let {
-                                        if (it > 0) {
-                                            "+$it"
-                                        } else {
-                                            it.toString()
-                                        }
-                                    } as String
+                                    maxTemperature = data.daily?.temperature2mMax[index]?.toInt()
+                                        ?.let {
+                                            if (it > 0) {
+                                                "+$it"
+                                            } else {
+                                                it.toString()
+                                            }
+                                        } as String,
+                                    minTemperature = data.daily?.temperature2mMin[index]?.toInt()
+                                        ?.let {
+                                            if (it > 0) {
+                                                "+$it"
+                                            } else {
+                                                it.toString()
+                                            }
+                                        } as String,
+                                    windSpeed = data.daily?.windSpeed[index]?.toInt() ?: 0,
+                                    windDirection = data.daily?.windDirection[index] ?: 0,
+                                    rainSum = data.daily?.rainSum[index]?.toInt() ?: 0,
                                 )
                             }
                         }
@@ -340,7 +346,14 @@ fun DateButton(dayWeek: String, day: String, month: String) {
 }
 
 @Composable
-fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: String) {
+fun DateForecast(
+    weatherCode: Int,
+    maxTemperature: String,
+    minTemperature: String,
+    windSpeed: Int,
+    windDirection: Int,
+    rainSum: Int
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -351,23 +364,77 @@ fun DateForecast(weatherCode: Int, maxTemperature: String, minTemperature: Strin
         ) {
             Text(
                 color = textColor,
-                text = maxTemperature,
+                text = "$maxTemperature°",
                 textAlign = TextAlign.Center,
                 style = weatherTypography.bodyLarge,
             )
             Text(
                 color = textColor,
-                text = minTemperature,
+                text = "$minTemperature°",
                 textAlign = TextAlign.Center,
                 style = weatherTypography.bodyMedium,
             )
         }
-        Icon(
-            painter = painterResource(id = getWeatherIcon(weatherCode)),
-            contentDescription = "Weather icon",
-            tint = textColor,
-            modifier = Modifier.size(30.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Icon(
+                painter = painterResource(id = getWeatherIcon(weatherCode)),
+                contentDescription = "Weather icon",
+                tint = textColor,
+                modifier = Modifier.size(30.dp)
+            )
+            Row(verticalAlignment = Alignment.Top) {
+                Text(
+                    color = textColor,
+                    text = "$rainSum",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    color = textColor,
+                    text = "mm",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodySmall,
+                )
+            }
+        }
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Row(verticalAlignment = Alignment.Top) {
+                Text(
+                    color = textColor,
+                    text = "$windSpeed",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    color = textColor,
+                    text = "km/h",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodySmall,
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_navigation),
+                    contentDescription = "Weather icon",
+                    tint = textColor,
+                    modifier = Modifier.size(18.dp).rotate(degrees = windDirection.toFloat())
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    color = textColor,
+                    text = "$windDirection°",
+                    textAlign = TextAlign.Center,
+                    style = weatherTypography.bodyMedium,
+                )
+            }
+        }
+
     }
 }
 

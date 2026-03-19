@@ -14,7 +14,7 @@ interface ForecastApi {
         @Query("latitude") latitude: String = "55.7887",
         @Query("longitude") longitude: String = "49.1221",
         @Query("current") current: String = "temperature_2m,weathercode",
-        @Query("daily") daily: String = "weathercode,temperature_2m_max,temperature_2m_min",
+        @Query("daily") daily: String = "weathercode,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,rain_sum",
         @Query("timeformat") timeFormat: String = "unixtime",
         @Query("timezone") timezone: String = "Europe/Moscow",
         @Query("forecast_days") forecastDays: String = "10",
