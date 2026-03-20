@@ -1,4 +1,4 @@
-# Android weather app
+# Weather app
 
 <p float="left">
   <img src="preview.png" width="300">
