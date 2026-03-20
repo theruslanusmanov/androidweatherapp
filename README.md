@@ -10,3 +10,4 @@
 
 - Location
 - Search
+- Animation
